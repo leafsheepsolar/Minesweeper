@@ -77,7 +77,7 @@ public class JavaUI extends JFrame {
 		
 		
 		//when clicked will trigger a popup sequence
-		gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL"));
+		gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
 		gameIcon.addActionListener(new ActionListener(){ 
 			
 			public void actionPerformed(ActionEvent e) {

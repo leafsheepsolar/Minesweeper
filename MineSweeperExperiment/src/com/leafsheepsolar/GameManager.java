@@ -78,7 +78,7 @@ public class GameManager {
 	        }
         }
     }
-    
+    //TODO: finish
     private void boardSetup() {//add the finished array to the JPanel
     	for(int r = 0; r<rows; r++) {
     		for(int c = 0; c<cols; c++) {
@@ -262,5 +262,4 @@ public class GameManager {
 //	public boolean isChordOn() {
 //		return true;
 //	}
-//	
 }

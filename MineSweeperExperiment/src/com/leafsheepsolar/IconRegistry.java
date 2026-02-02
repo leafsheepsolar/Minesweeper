@@ -29,7 +29,7 @@ public final class IconRegistry {
 	     * ICON_SIZES.put("KEY", new Rectangle(width,height));
 	     */
     }
-        /* ─────────────────────────────────────────────────────────
+     /* ─────────────────────────────────────────────────────────
      * ICON FILE REGISTRY
      * ADD NEW ICON REFERENCES HERE
      * ───────────────────────────────────────────────────────── */
@@ -85,8 +85,8 @@ public final class IconRegistry {
     }
 
     /**
-     * Returns a cached, scaled icon using CELL_ICON_SIZE.
-     * Intended for JButton / Cell usage.
+     * Returns a cached, scaled icon using ICON_SIZES.
+     * Intended for component usage.
      */
     public static ImageIcon getScaled(String fileKey, String typeKey) {
         return SCALED_ICON_CACHE.computeIfAbsent(
@@ -118,10 +118,12 @@ public final class IconRegistry {
     }
 
     private static ImageIcon scale(ImageIcon icon, String typeKey) {
+    	Rectangle rect = ICON_SIZES.get(typeKey);
+    	
         Image scaled = icon.getImage()
                            .getScaledInstance(
-                               (int)ICON_SIZE.getWidth(),
-                               (int)ICON_SIZE.getHeight(),
+                               (int)rect.getWidth(),
+                               (int)rect.getHeight(),
                                Image.SCALE_SMOOTH
                            );
         return new ImageIcon(scaled);

@@ -87,13 +87,13 @@ public class Cell extends JButton {
 		if(!isRevealed ) {
 			if(!isFlagged) {//if it isnt already flagged, flag it
 				
-				setIcon(IconRegistry.getScaled("FLAG"));
+				setIcon(IconRegistry.getScaled("FLAG","CELL"));
 				isFlagged = true;
 				manager.addFlag();
 			}
 			else {//if it is already flagged, unflag it
 				
-				setIcon(IconRegistry.getScaled("BLANK"));
+				setIcon(IconRegistry.getScaled("BLANK","CELL"));
 				isFlagged = false;
 				manager.removeFlag();
 			}
@@ -102,30 +102,31 @@ public class Cell extends JButton {
 		
 	}
 
-		
-	//reveal the cell
+	/**
+	 * Reveals the cell
+	 */	
 	public void reveal() {
 		if(!isRevealed) {
 			if(!isMine) {
 				//sets the icon based on the num of adjacent mines
 				switch(adjacentMines) {
-				case 1 -> setIcon(IconRegistry.getScaled("ONE"));
-		        case 2 -> setIcon(IconRegistry.getScaled("TWO"));
-		        case 3 -> setIcon(IconRegistry.getScaled("THREE"));
-		        case 4 -> setIcon(IconRegistry.getScaled("FOUR"));
-		        case 5 -> setIcon(IconRegistry.getScaled("FIVE"));
-		        case 6 -> setIcon(IconRegistry.getScaled("SIX"));
-		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN"));
-		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT"));
-		        default -> setIcon(IconRegistry.getScaled("BLANK"));
+				case 1 -> setIcon(IconRegistry.getScaled("ONE","CELL"));
+		        case 2 -> setIcon(IconRegistry.getScaled("TWO","CELL"));
+		        case 3 -> setIcon(IconRegistry.getScaled("THREE","CELL"));
+		        case 4 -> setIcon(IconRegistry.getScaled("FOUR","CELL"));
+		        case 5 -> setIcon(IconRegistry.getScaled("FIVE","CELL"));
+		        case 6 -> setIcon(IconRegistry.getScaled("SIX","CELL"));
+		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
+		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
+		        default -> setIcon(IconRegistry.getScaled("BLANK","CELL"));
 				}
 				isRevealed = true;
 			}else { 
 				if(manager.getGameLost() == false) {//if this is the first mine revealed then it was the cause of the loss and should have a red background
-					setIcon(IconRegistry.getScaled("PRESSED_MINE"));
+					setIcon(IconRegistry.getScaled("PRESSED_MINE","CELL"));
 					manager.gameLost();
 				}else { 
-					setIcon(IconRegistry.getScaled("REVEALED_MINE"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background
+					setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background
 				}
 			}	
 		}
@@ -160,7 +161,7 @@ public class Cell extends JButton {
 	
 	@Override
 	public String toString() {
-		return "Columns: " + col + ", rows: " + row + ", is a mine: " + isMine + ", is revealed: " + isRevealed
-				+ ", number of adjacent mines: " + adjacentMines + ".";
+		return "Column: " + col + ", row: " + row + ", is a mine: " + isMine + ", is revealed: " + isRevealed
+				+ ", number of adjacent mines: " + adjacentMines + "." + ", current Icon: " + this.getIcon();
 	}
 }

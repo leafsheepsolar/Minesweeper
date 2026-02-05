@@ -25,13 +25,17 @@ public class JavaUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, northPane, boardPane;
 	private JButton gameIcon;
-	private StopwatchLabel timer;	//MOVE METHODS OUTSIDE CONSTRUCTOR
+	private StopwatchLabel timer;
+	private JLabel mineCounter;
 	private GameManager manager;
 	final int defaultRows = 16, defaultCols = 30, defaultMines = 99;
 	private int previousRows, previousCols, previousMines;
+	//TODO:check the timer's functionality
+	//TODO:check the gameIndicator's functionality
+	//TODO:check mineCounter's functionality - this needs the most work,  havent done anything yet
 	
 	
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,27 +61,30 @@ public class JavaUI extends JFrame {
 		gameIcon = new JButton();
 		timer = new StopwatchLabel();
 		boardPane = new JPanel();
+		mineCounter = new JLabel();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 500, 600);
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		Dimension contentPaneSize = new Dimension();
 		
 		
 		//TODO: resize north panel to be proportional to window size, only length wise though not width
 		//sizing and creating top panel
 		northPane.setLayout(null);
-		northPane.setPreferredSize(new Dimension((int)contentPane.getSize(contentPaneSize).getWidth(), 30)); //northpanel size is realitive to contentPane size
+		northPane.setPreferredSize(new Dimension(0,51)); //width is ignored (relative to parent), height is not
 		contentPane.add(northPane, BorderLayout.NORTH);
 		
 		boardPane.setLayout(new GridBagLayout());//work on the board layout
 		contentPane.add(boardPane, BorderLayout.CENTER);
 		
+		mineCounter.setPreferredSize(new Dimension(75,40));
 		
-		//when clicked will trigger a popup sequence
+		
+		//triggers a popup sequence
 		gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
+		gameIcon.setPreferredSize(new Dimension(45,45));
 		gameIcon.addActionListener(new ActionListener(){ 
 			
 			public void actionPerformed(ActionEvent e) {
@@ -85,13 +92,13 @@ public class JavaUI extends JFrame {
 				
 			}
 		});
-		
+
 		//resize such that the location will be proportional to the northPane's size
-		gameIcon.setBounds(northPane.getX(), northPane.getY(), 40, 20);
+		gameIcon.setBounds(getWidth()/2 - 45, northPane.getY()+3, 45, 45);
 		northPane.add(gameIcon);
 		
 		
-		//uses StopwatchLabel to create a stopwatch
+		//StopwatchLabel is exactly that: extends JLabel and has stopwatch functionality
 		timer.setBackground(new Color(128,128,128));
 		timer.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 4));
 		timer.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -101,6 +108,7 @@ public class JavaUI extends JFrame {
 		timer.startTimer();
 		timer.pause();
 		
+		
 	}
 	
 	public void startTimer() {
@@ -108,21 +116,20 @@ public class JavaUI extends JFrame {
 	}
 	
 	public void gameWon() {
-			
-			gameIcon.setIcon(IconRegistry.getScaled("GAME_WON"));
+			gameIcon.setIcon(IconRegistry.getScaled("GAME_WON","GAME_INDICATOR"));
 			timer.pause();	
 	}
 	
 	
 	public void gameLost() {
-			gameIcon.setIcon(IconRegistry.getScaled("GAME_LOST"));
+			gameIcon.setIcon(IconRegistry.getScaled("GAME_LOST","GAME_INDICATOR"));
 			timer.pause();
 	}
 	
 	//this is to reset the game board
 	private void gameIconActionPerformed() {
 
-	    gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL"));
+	    gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
 	    timer.reset();
 
 	    // Step 1: Ask if user wants custom values
@@ -188,6 +195,14 @@ public class JavaUI extends JFrame {
 	public void setGameBoard(JPanel boardPane) {
 		this.boardPane = boardPane;
 		pack();
+	}
+
+	public JLabel getMineCounter() {
+		return mineCounter;
+	}
+
+	public void setMineCounter(JLabel mineCounter) {
+		this.mineCounter = mineCounter;
 	}
 	
 	

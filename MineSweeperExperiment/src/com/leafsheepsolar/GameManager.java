@@ -2,9 +2,11 @@ package com.leafsheepsolar;
 
 import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 public class GameManager {
 
@@ -19,10 +21,11 @@ public class GameManager {
     private int numCorrectFlags;
     private JavaUI parent;
     private JPanel boardPanel;
-    private final static GridBagConstraints gbc = new GridBagConstraints();
     /* gameLost -> 1 means the game is lost and thus reveal only the first mine with the red background to indicate that it was the one chosen,
     *  whereas the rest of the mines will be revealed with normal backgrounds
     */
+    
+    
     public GameManager(int rows, int cols, int numMines, JavaUI parent) {
     	this.parent = parent;
         this.numMines = numMines;
@@ -87,7 +90,29 @@ public class GameManager {
     	}
     }
     
+    public void createButtonGrid() {
 
+	    JPanel boardPanel = new JPanel(new GridBagLayout());
+	    GridBagConstraints gbc = new GridBagConstraints();
+
+	    gbc.fill = GridBagConstraints.BOTH;
+	    gbc.weightx = 1.0;
+	    gbc.weighty = 1.0;
+
+	    for (int r = 0; r < rows; r++) {
+	        for (int c = 0; c < cols; c++) {
+	            gbc.gridx = c; // column
+	            gbc.gridy = r; // row
+
+	            boardPanel.add(grid[r][c], gbc);
+	        }
+	    }
+
+	    parent.setGameBoard(boardPanel);
+	}
+
+    
+    
     // Count the number of adjacent mines for the Cell at the specified location.
     // Uses intGrid where 1 = mine, 0 = no mine.
     // Checks all 8 adjacent cells plus the cell itself with bounds checking.
@@ -136,6 +161,8 @@ public class GameManager {
         int r = cell.getRow();
         int c = cell.getCol();
 
+        
+        
         // Bounds check
         if (r < 0 || r >= rows || c < 0 || c >= cols) {
             return;

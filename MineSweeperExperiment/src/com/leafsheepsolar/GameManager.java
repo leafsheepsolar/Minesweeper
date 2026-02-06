@@ -2,7 +2,6 @@ package com.leafsheepsolar;
 
 import java.util.Random;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import java.awt.GridBagConstraints;
@@ -14,7 +13,7 @@ public class GameManager {
     private final int cols;
     private Cell[][] grid;
     private int[][] intGrid;//simplifying the randomizing
-    private final int numMines;
+    private final int numMines; 
     private int placedFlags;
     private boolean startTimer;
     private boolean gameLost; //game == 0 -> game isn't lost, game == anything else -> lost

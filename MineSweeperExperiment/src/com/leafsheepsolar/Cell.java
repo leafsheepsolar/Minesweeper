@@ -34,7 +34,7 @@ public class Cell extends JButton {
 	private void configureButton() {
 		this.setBounds(new Rectangle(22,22));
 	    setBorderPainted(false);
-	    setFocusPainted(false);
+	    setFocusable(false);
 	    setContentAreaFilled(false);
 	}
 
@@ -51,7 +51,7 @@ public class Cell extends JButton {
 	private void addLeftRightClickActions() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {
 				
 				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals tile, chording
 					if(!isRevealed()) {

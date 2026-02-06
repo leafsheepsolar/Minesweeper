@@ -20,14 +20,14 @@ public final class IconRegistry {
     
     static {
     	//Icon type size
-	    ICON_SIZES.put("CELL", new Rectangle(22,22));
+	    ICON_SIZES.put("CELL", new Rectangle(24,24));
 	    ICON_SIZES.put("TIMER", new Rectangle(60,45));
 	    ICON_SIZES.put("GAME_INDICATOR", new Rectangle(45,45));
 	    
 	    /*
 	     * To add a new icon size:
 	     * ICON_SIZES.put("KEY", new Rectangle(width,height));
-	     */
+	     */ 
     }
      /* ─────────────────────────────────────────────────────────
      * ICON FILE REGISTRY

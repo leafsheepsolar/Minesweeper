@@ -18,11 +18,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 public class JavaUI extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private JPanel contentPane, northPane, boardPane;
 	private JButton gameIcon;
 	private StopwatchLabel timer;
@@ -58,10 +59,11 @@ public class JavaUI extends JFrame {
 	public JavaUI() {
 		contentPane = new JPanel();
 		northPane = new JPanel();
-		gameIcon = new JButton();
-		timer = new StopwatchLabel();
 		boardPane = new JPanel();
+		gameIcon = new JButton();
 		mineCounter = new JLabel();
+		timer = new StopwatchLabel();
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 600);

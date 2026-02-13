@@ -196,7 +196,6 @@ public class JavaUI extends JFrame {
 	
 	public void setGameBoard(JPanel boardPane) {
 		this.boardPane = boardPane;
-		pack();
 	}
 
 	public JLabel getMineCounter() {

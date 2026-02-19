@@ -3,6 +3,7 @@ package com.leafsheepsolar;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ActionEvent;
 
 public class JFrameExperiments extends JFrame {
@@ -55,6 +58,7 @@ public class JFrameExperiments extends JFrame {
 		
 		nPanel = new JPanel(null);
 		nPanel.setPreferredSize(new Dimension(0,51));//width is ignored, stretched in the NORTH section of border
+//		nPanel.setMinimumSize(getMinimumSize());
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
 		mineLabel = new JLabel("mineLabel");
@@ -65,8 +69,23 @@ public class JFrameExperiments extends JFrame {
 		timerLabel.setBounds(383, 11, 70, 28);
 		nPanel.add(timerLabel);
 		
-		int rows = 15;
-		int cols = 10;
+		JLabel lbl4 = new JLabel("lbl");
+		lbl4.setBounds(59, 16, 142, 24);
+		nPanel.add(lbl4);
+		
+		addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		    	String str = getSize().toString();
+		    	String str1 = str.substring(18);
+		    	lbl4.setText(str1);
+		    	
+		    	//I need to resize the other components in nPanel in order to determine the minSize of frame
+		    }
+		});
+		
+		int rows = 10;
+		int cols = 15;
 		JButton[][] buttons = new JButton[rows][cols];
 		for(int r = 0; r<rows; r++) {
 			for(int c = 0; c<cols; c++) {
@@ -85,6 +104,8 @@ public class JFrameExperiments extends JFrame {
 		});
 		gameIcon.setBounds(getWidth()/2 - 45, nPanel.getY()+3, 75, 45);
 		nPanel.add(gameIcon);
+		
+		
 	}
 	
 	/**
@@ -92,7 +113,7 @@ public class JFrameExperiments extends JFrame {
 	 * 	<p>cell size is determined by Cell size
 	 * 	<p>JPanel size is determined by the grid size
 	 */
-	public void createButtonGrid(JButton[][] buttons) {
+	public void createButtonGridBagLayout(JButton[][] buttons) {
 	    int rows = buttons.length;
 	    int cols = buttons[0].length;
 	    int buttonSize = (int)buttons[0][0].getPreferredSize().getHeight();
@@ -119,8 +140,7 @@ public class JFrameExperiments extends JFrame {
 	    
 	    int frameHeight= cPanelDim.height + (int)nPanel.getPreferredSize().getHeight();//frame size is the nPanel + cPanel sizes added up
 	    int frameWidth = cPanelDim.width; //cPanelWidth
-	    Dimension frameDim = new Dimension(frameWidth, frameHeight);
-	    setPreferredSize(frameDim);
+	    setBounds(100,100,frameWidth,frameHeight);
 		/*
 		* 
 		*
@@ -128,5 +148,34 @@ public class JFrameExperiments extends JFrame {
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	}
 	
-	
+	public void createButtonGrid(JButton[][] buttons) {
+		int rows = buttons.length;
+	    int cols = buttons[0].length;
+	    int buttonSize = (int)buttons[0][0].getPreferredSize().getHeight();
+
+	    
+		/* final */JPanel cPanel = new JPanel(new GridLayout(rows,cols));
+	    int cPanelWidth = buttonSize*cols;
+	    int cPanelHeight = buttonSize*rows;
+	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);
+	    cPanel.setMinimumSize(cPanelDim);
+	    
+	    int frameHeight= cPanelDim.height + (int)nPanel.getPreferredSize().getHeight();//frame size is the nPanel + cPanel sizes added up
+	    int frameWidth = cPanelDim.width; //cPanelWidth
+	    setBounds(100,100,frameWidth,frameHeight);
+
+	    for (int r = 0; r < rows; r++) {
+	        for (int c = 0; c < cols; c++) {
+	            
+	            cPanel.add(buttons[r][c]);
+	        }
+	    }
+	    
+
+		/*
+		* 
+		*
+		*/
+		contentPane.add(cPanel, BorderLayout.CENTER);
+	}
 }

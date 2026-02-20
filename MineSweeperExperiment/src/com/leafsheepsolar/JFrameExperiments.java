@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class JFrameExperiments extends JFrame {
 
@@ -57,32 +59,24 @@ public class JFrameExperiments extends JFrame {
 		setContentPane(contentPane);
 		
 		nPanel = new JPanel(null);
+		nPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		nPanel.setPreferredSize(new Dimension(0,51));//width is ignored, stretched in the NORTH section of border
 //		nPanel.setMinimumSize(getMinimumSize());
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
 		mineLabel = new JLabel("mineLabel");
-		mineLabel.setBounds(10, 3, 75, 40);
+		mineLabel.setBounds(10, 5, 75, 40);
+		mineLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		nPanel.add(mineLabel);
 		
 		timerLabel = new JLabel("timerLabel");
-		timerLabel.setBounds(383, 11, 70, 28);
+		timerLabel.setBounds(383, 5, 75, 40);
+		timerLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		nPanel.add(timerLabel);
 		
 		JLabel lbl4 = new JLabel("lbl");
-		lbl4.setBounds(59, 16, 142, 24);
+		lbl4.setBounds(5, 30, 140, 25);
 		nPanel.add(lbl4);
-		
-		addComponentListener(new ComponentAdapter() {
-		    @Override
-		    public void componentResized(ComponentEvent e) {
-		    	String str = getSize().toString();
-		    	String str1 = str.substring(18);
-		    	lbl4.setText(str1);
-		    	
-		    	//I need to resize the other components in nPanel in order to determine the minSize of frame
-		    }
-		});
 		
 		int rows = 10;
 		int cols = 15;
@@ -96,15 +90,27 @@ public class JFrameExperiments extends JFrame {
 			}
 		}
 		
-		JButton gameIcon = new JButton("reset");
+		JButton gameIcon = new JButton(":)");
 		gameIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createButtonGrid(buttons);
-			}
+			}//
 		});
-		gameIcon.setBounds(getWidth()/2 - 45, nPanel.getY()+3, 75, 45);
+		gameIcon.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40);
 		nPanel.add(gameIcon);
 		
+		
+		addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		    	String str = getSize().toString();
+		    	String str1 = str.substring(18);
+		    	lbl4.setText(str1);
+				gameIcon.setBounds(getWidth()/2 - 30, 5, 40, 40);
+				timerLabel.setBounds(getWidth()-105, 5, 70, 40);
+		    	
+		    }
+		});
 		
 	}
 	
@@ -118,7 +124,7 @@ public class JFrameExperiments extends JFrame {
 	    int cols = buttons[0].length;
 	    int buttonSize = (int)buttons[0][0].getPreferredSize().getHeight();
 
-	    JPanel cPanel = new JPanel(new GridBagLayout());
+		/* final */ JPanel cPanel = new JPanel(new GridBagLayout());
 	    GridBagConstraints gbc = new GridBagConstraints();
 
 	    gbc.fill = GridBagConstraints.BOTH;
@@ -137,6 +143,7 @@ public class JFrameExperiments extends JFrame {
 	    int cPanelWidth = buttonSize*cols;
 	    int cPanelHeight = buttonSize*rows;
 	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);
+	    cPanel.setPreferredSize(cPanelDim);
 	    
 	    int frameHeight= cPanelDim.height + (int)nPanel.getPreferredSize().getHeight();//frame size is the nPanel + cPanel sizes added up
 	    int frameWidth = cPanelDim.width; //cPanelWidth

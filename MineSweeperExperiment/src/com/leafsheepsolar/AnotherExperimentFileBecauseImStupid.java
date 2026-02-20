@@ -40,34 +40,16 @@ public class AnotherExperimentFileBecauseImStupid extends JFrame {
 	public AnotherExperimentFileBecauseImStupid() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 600);
+		setResizeable(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel nPanel = new JPanel();
-		nPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		Dimension nPanelDim = new Dimension(100,50);
-		nPanel.setPreferredSize(new Dimension(nPanelDim));
-		contentPane.add(nPanel, BorderLayout.NORTH);
-		nPanel.setLayout(null);
+		final JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		contentPane.add(panel, BorderLayout.CENTER);
 		
-		JLabel lbl = new JLabel(nPanelDim.toString());
-		lbl.setBounds(137, 11, 294, 28);
-		nPanel.add(lbl);
-		
-		JPanel cPanel = new JPanel();
-		cPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		contentPane.add(cPanel, BorderLayout.CENTER);
-		cPanel.setLayout(new GridBagLayout());
-		
-		JLabel lbl1 = new JLabel(getPreferredSize().toString());
-		GridBagConstraints gbc_lbl1 = new GridBagConstraints();
-		gbc_lbl1.gridwidth = 7;
-		gbc_lbl1.gridheight = 3;
-		gbc_lbl1.gridx = 0;
-		gbc_lbl1.gridy = 0;
-		cPanel.add(lbl1, gbc_lbl1);
 		
 		
 		

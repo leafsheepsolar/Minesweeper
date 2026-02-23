@@ -1,6 +1,7 @@
 package com.leafsheepsolar;
 
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -11,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -27,9 +27,9 @@ public class JFrameExperiments extends JFrame {
 	private JPanel contentPane;
 	private JPanel nPanel;
 	private JPanel cPanel;
-	private GridBagConstraints c;
 	private JLabel mineLabel;
 	private JLabel timerLabel;
+
 	
 	/**
 	 * Launch the application.
@@ -83,8 +83,7 @@ public class JFrameExperiments extends JFrame {
 		JButton[][] buttons = new JButton[rows][cols];
 		for(int r = 0; r<rows; r++) {
 			for(int c = 0; c<cols; c++) {
-				String str = ""+r+","+c;
-				JButton button = new JButton(str);
+				JButton button = new JButton();
 				button.setPreferredSize(new Dimension(25,25));
 				buttons[r][c] = button;
 			}
@@ -96,9 +95,9 @@ public class JFrameExperiments extends JFrame {
 				createButtonGrid(buttons);
 			}//
 		});
+
 		gameIcon.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40);
 		nPanel.add(gameIcon);
-		
 		
 		addComponentListener(new ComponentAdapter() {
 		    @Override
@@ -148,10 +147,6 @@ public class JFrameExperiments extends JFrame {
 	    int frameHeight= cPanelDim.height + (int)nPanel.getPreferredSize().getHeight();//frame size is the nPanel + cPanel sizes added up
 	    int frameWidth = cPanelDim.width; //cPanelWidth
 	    setBounds(100,100,frameWidth,frameHeight);
-		/*
-		* 
-		*
-		*/
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	}
 	
@@ -178,11 +173,6 @@ public class JFrameExperiments extends JFrame {
 	        }
 	    }
 	    
-
-		/*
-		* 
-		*
-		*/
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	}
 }

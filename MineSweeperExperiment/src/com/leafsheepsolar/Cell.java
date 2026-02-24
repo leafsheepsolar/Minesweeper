@@ -7,11 +7,13 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 public class Cell extends JButton {
+	static private int cellSize = 22;
+	
 	final private boolean isMine;
-	private boolean isRevealed;
-	private int adjacentMines; // -1 if isMine is true
 	final private int row;
 	final private int col;
+	private boolean isRevealed;
+	private int adjacentMines; // -1 if isMine is true
 	private boolean isFlagged;
 	protected GameManager manager;
 //	protected boolean chordOn;
@@ -158,6 +160,14 @@ public class Cell extends JButton {
 		return col;
 	}
 
+	/**
+	 * <p>Returns the size in pixels of a cell.
+	 * 
+	 * <p> Only returns one value because cells are square.
+	 */
+	public static int getCellSize() {
+		return cellSize;
+	}
 	
 	@Override
 	public String toString() {

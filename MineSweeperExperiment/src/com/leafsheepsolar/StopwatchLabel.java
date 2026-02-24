@@ -27,27 +27,35 @@ public class StopwatchLabel extends JLabel {
         });
     }
 
-    // Starts or resumes the timer
+	/**
+	 *  Starts or resumes the timer
+	 */
     public void startTimer() {
         if (!timer.isRunning()) {
             timer.start();
         }
     }
 
-    // Pauses the timer
+	/**
+	 *  Pauses the timer
+	 */    
     public void pause() {
         timer.stop();
     }
 
-    // Resets time to 0 and updates display
+	/**
+	 *  Resets time to 0 and updates display
+	 */
     public void reset() {
         timer.stop();
         time = 0;
         setText(formatTime());
     }
 
-    // Returns the current time value
-    public int getTime() {
+	/**
+	 *  Returns the current time field
+	 */
+	 public int getTime() {
         return time;
     }
 

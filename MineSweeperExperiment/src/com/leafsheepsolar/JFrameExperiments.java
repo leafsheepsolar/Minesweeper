@@ -61,22 +61,15 @@ public class JFrameExperiments extends JFrame {
 		nPanel = new JPanel(null);
 		nPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		nPanel.setPreferredSize(new Dimension(0,51));//width is ignored, stretched in the NORTH section of border
-//		nPanel.setMinimumSize(getMinimumSize());
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
 		mineLabel = new JLabel("mineLabel");
 		mineLabel.setBounds(10, 5, 75, 40);
-		mineLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		nPanel.add(mineLabel);
 		
 		timerLabel = new JLabel("timerLabel");
 		timerLabel.setBounds(383, 5, 75, 40);
-		timerLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		nPanel.add(timerLabel);
-		
-		JLabel lbl4 = new JLabel("lbl");
-		lbl4.setBounds(5, 30, 140, 25);
-		nPanel.add(lbl4);
 		
 		int rows = 10;
 		int cols = 15;
@@ -84,7 +77,7 @@ public class JFrameExperiments extends JFrame {
 		for(int r = 0; r<rows; r++) {
 			for(int c = 0; c<cols; c++) {
 				JButton button = new JButton();
-				button.setPreferredSize(new Dimension(25,25));
+				button.setPreferredSize(new Dimension(22,22));
 				buttons[r][c] = button;
 			}
 		}
@@ -92,7 +85,7 @@ public class JFrameExperiments extends JFrame {
 		JButton gameIcon = new JButton(":)");
 		gameIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createButtonGrid(buttons);
+				createButtonGrid1(buttons);
 			}//
 		});
 
@@ -102,9 +95,6 @@ public class JFrameExperiments extends JFrame {
 		addComponentListener(new ComponentAdapter() {
 		    @Override
 		    public void componentResized(ComponentEvent e) {
-		    	String str = getSize().toString();
-		    	String str1 = str.substring(18);
-		    	lbl4.setText(str1);
 				gameIcon.setBounds(getWidth()/2 - 30, 5, 40, 40);
 				timerLabel.setBounds(getWidth()-105, 5, 70, 40);
 		    	
@@ -113,66 +103,23 @@ public class JFrameExperiments extends JFrame {
 		
 	}
 	
-	/**
-	 * 	<p>grid of Cells with rows and cols
-	 * 	<p>cell size is determined by Cell size
-	 * 	<p>JPanel size is determined by the grid size
-	 */
-	public void createButtonGridBagLayout(JButton[][] buttons) {
+	public void createButtonGrid1(JButton[][] buttons) {
 	    int rows = buttons.length;
 	    int cols = buttons[0].length;
 	    int buttonSize = (int)buttons[0][0].getPreferredSize().getHeight();
 
-		/* final */ JPanel cPanel = new JPanel(new GridBagLayout());
-	    GridBagConstraints gbc = new GridBagConstraints();
-
-	    gbc.fill = GridBagConstraints.BOTH;
-	    gbc.weightx = 1.0;
-	    gbc.weighty = 1.0;
-
-	    for (int r = 0; r < rows; r++) {
-	        for (int c = 0; c < cols; c++) {
-	            gbc.gridx = c; // column
-	            gbc.gridy = r; // row
-	            
-	            cPanel.add(buttons[r][c], gbc);
-	        }
-	    }
-	    
-	    int cPanelWidth = buttonSize*cols;
-	    int cPanelHeight = buttonSize*rows;
+	    cPanel = new JPanel(new GridLayout(rows, cols));
+	    int cPanelWidth = buttonSize * cols;
+	    int cPanelHeight = buttonSize * rows;
 	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);
 	    cPanel.setPreferredSize(cPanelDim);
-	    
-	    int frameHeight= cPanelDim.height + (int)nPanel.getPreferredSize().getHeight();//frame size is the nPanel + cPanel sizes added up
-	    int frameWidth = cPanelDim.width; //cPanelWidth
-	    setBounds(100,100,frameWidth,frameHeight);
-		contentPane.add(cPanel, BorderLayout.CENTER);
-	}
-	
-	public void createButtonGrid(JButton[][] buttons) {
-		int rows = buttons.length;
-	    int cols = buttons[0].length;
-	    int buttonSize = (int)buttons[0][0].getPreferredSize().getHeight();
 
-	    
-		/* final */JPanel cPanel = new JPanel(new GridLayout(rows,cols));
-	    int cPanelWidth = buttonSize*cols;
-	    int cPanelHeight = buttonSize*rows;
-	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);
-	    cPanel.setMinimumSize(cPanelDim);
-	    
-	    int frameHeight= cPanelDim.height + (int)nPanel.getPreferredSize().getHeight();//frame size is the nPanel + cPanel sizes added up
-	    int frameWidth = cPanelDim.width; //cPanelWidth
-	    setBounds(100,100,frameWidth,frameHeight);
-
-	    for (int r = 0; r < rows; r++) {
-	        for (int c = 0; c < cols; c++) {
-	            
+	    for (int r = 0; r < rows; r++)
+	        for (int c = 0; c < cols; c++)
 	            cPanel.add(buttons[r][c]);
-	        }
-	    }
-	    
-		contentPane.add(cPanel, BorderLayout.CENTER);
+
+	    contentPane.add(cPanel, BorderLayout.CENTER);
+	    pack();
+	    setMinimumSize(getSize()); // prevent shrinking below natural grid size
 	}
 }

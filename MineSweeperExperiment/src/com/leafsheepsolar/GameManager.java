@@ -2,10 +2,13 @@ package com.leafsheepsolar;
 
 import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 public class GameManager {
 
@@ -24,7 +27,7 @@ public class GameManager {
     *  whereas the rest of the mines will be revealed with normal backgrounds
     */
     
-    
+	/** <p> Manages making the cell board and the methods associated with it. */
     public GameManager(int rows, int cols, int numMines, JavaUI parent) {
     	this.parent = parent;
         this.numMines = numMines;
@@ -43,7 +46,7 @@ public class GameManager {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if(intGrid[rows][cols]==1) {
-                	//construct cell
+                	//construct cell grid from the int grid
                     grid[r][c] = new Cell(r, c, true, -1, this);
                 }
                 else {
@@ -51,12 +54,11 @@ public class GameManager {
                 }
             }
         }
-        boardSetup();
+        createBoard();
     }
     
     /* place mines in intGrid
      * 1 = mine, 0 = not mine. Given numMines, randomize mine placement within the int[][] intGrid
-     * TODO: does it work?
      */
     private void placeMines() {
         //starts the array with only 0's
@@ -80,14 +82,22 @@ public class GameManager {
 	        }
         }
     }
-    //TODO: finish
-    private void boardSetup() {//add the finished array to the JPanel
-    	for(int r = 0; r<rows; r++) {
-    		for(int c = 0; c<cols; c++) {
-    			boardPanel.add(grid[r][c]);// use gbc when adding to the board. 
-    		}
-    	}
-    }
+    
+    public JPanel createBoard() {
+	    int buttonSize = Cell.getCellSize();
+
+	    JPanel cPanel = new JPanel(new GridLayout(rows, cols));
+	    int cPanelWidth = buttonSize * cols;
+	    int cPanelHeight = buttonSize * rows;
+	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);
+	    cPanel.setPreferredSize(cPanelDim);
+
+	    for (int r = 0; r < rows; r++)
+	        for (int c = 0; c < cols; c++)
+	            cPanel.add(grid[r][c]);
+	    
+	    return cPanel;
+	}
     
     public void createButtonGrid() {
 

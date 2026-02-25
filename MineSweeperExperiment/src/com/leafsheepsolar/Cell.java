@@ -71,8 +71,6 @@ public class Cell extends JButton {
 			if(manager.getStartTimer()) {//if the timer is ready to be started, start
 				manager.startTimerWorkaround();
 			}
-			manager.isGameWon();
-			
 			;}
 			
 		});
@@ -83,25 +81,21 @@ public class Cell extends JButton {
 	}
 
 	//flagging the given tile
-	protected void flag() {
+	public void flag() {
 		
 		//must be unrevealed to be flagged
 		if(!isRevealed ) {
 			if(!isFlagged) {//if it isnt already flagged, flag it
-				
 				setIcon(IconRegistry.getScaled("FLAG","CELL"));
 				isFlagged = true;
-				manager.addFlag();
+				manager.addFlag(isMine);
 			}
 			else {//if it is already flagged, unflag it
-				
 				setIcon(IconRegistry.getScaled("BLANK","CELL"));
 				isFlagged = false;
-				manager.removeFlag();
+				manager.removeFlag(isMine);
 			}
-			
 		}
-		
 	}
 
 	/**
@@ -123,6 +117,7 @@ public class Cell extends JButton {
 		        default -> setIcon(IconRegistry.getScaled("BLANK","CELL"));
 				}
 				isRevealed = true;
+				manager.addRevealedCell();
 			}else { 
 				if(manager.getGameLost() == false) {//if this is the first mine revealed then it was the cause of the loss and should have a red background
 					setIcon(IconRegistry.getScaled("PRESSED_MINE","CELL"));

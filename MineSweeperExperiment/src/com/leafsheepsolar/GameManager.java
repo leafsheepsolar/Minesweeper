@@ -3,6 +3,7 @@ package com.leafsheepsolar;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
@@ -17,10 +18,11 @@ public class GameManager {
     private Cell[][] grid;
     private int[][] intGrid;//simplifying the randomizing
     private final int numMines; 
-    private int placedFlags;
+    private int numFlags;
     private boolean startTimer;
     private boolean gameLost; //game == 0 -> game isn't lost, game == anything else -> lost
     private int numCorrectFlags;
+    private int numRevealedCells;
     private JavaUI parent;
     private JPanel boardPanel;
     /* gameLost -> 1 means the game is lost and thus reveal only the first mine with the red background to indicate that it was the one chosen,
@@ -37,6 +39,7 @@ public class GameManager {
         startTimer = true;
         boardPanel = parent.getGameBoard();
         grid = new Cell[rows][cols];
+        intGrid = new int[rows][cols];
         initialize();
     }
     
@@ -227,14 +230,6 @@ public class GameManager {
     	}
 	}
     
-    public void isGameWon() {
-    	if((numCorrectFlags + 1) == numMines) {
-    		parent.gameWon();
-    	}
-    }
-    //TODO check bounds of the cell grid?
-    
-
     //get the mine at the specified location in the grid
     public int getIntInGrid(int r, int c) {
         return intGrid[r][c];
@@ -246,31 +241,51 @@ public class GameManager {
     }
     
     public int getPlacedFlags() {
-    	return placedFlags;
-    }
-    //for increasing flag counter
-    public void addFlag() {
-    	placedFlags++;
-    	if(placedFlags < numMines) {
-    		parent.gameWon();//TODO fix this
-    	}
+    	return numFlags;
     }
     
-    public void removeFlag() {
-    	placedFlags--;
+	/** increases the flagcounter by one, checks if the game is won */
+    public void addFlag(boolean isMine) {
+    	if(isMine) {
+    		numCorrectFlags++;
+    		if(numCorrectFlags + numRevealedCells - 1 == rows*cols) {
+				/*
+				 * Locate the last unrevealed mine cell and flag it.
+				 */
+    		}
+    		if(numCorrectFlags == numMines - 1) { //if theres only one mine left to flag, youre done
+    			parent.gameWon(); //TODO: fix this
+    		}
+    	}
+    	numFlags++;
+    	JLabel temp = parent.getMineCounter();
+    	temp.setText(String.valueOf(numFlags));
+    	parent.setMineCounter(temp);
+    }
+    
+    // Lowers the count of flags
+    public void removeFlag(boolean isMine) {
+    	if(isMine) 
+    		numCorrectFlags--;
+    	numFlags--;
+    	JLabel temp = parent.getMineCounter();
+    	temp.setText(String.valueOf(numFlags));
+    	parent.setMineCounter(temp);
     }
 	
-    // Rows count
+	/** adds 1 to the number of revealed cells */
+    public void addRevealedCell() {
+    	numRevealedCells++;
+    }
+    
     public int getRows() {
         return rows;
     }
 
-    // Columns count
     public int getCols() {
         return cols;
     }
 
-    // Mines count
     public int getMines() {
         return numMines;
     }
@@ -295,6 +310,7 @@ public class GameManager {
 		parent.startTimer();
 	}
 
+//WIP
 //	public boolean isChordOn() {
 //		return true;
 //	}

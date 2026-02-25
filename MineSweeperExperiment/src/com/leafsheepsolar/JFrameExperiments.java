@@ -29,7 +29,7 @@ public class JFrameExperiments extends JFrame {
 	private JPanel cPanel;
 	private JLabel mineLabel;
 	private JLabel timerLabel;
-
+	
 	
 	/**
 	 * Launch the application.

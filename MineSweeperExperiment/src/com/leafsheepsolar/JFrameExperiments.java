@@ -20,6 +20,11 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class JFrameExperiments extends JFrame {
 
@@ -63,11 +68,17 @@ public class JFrameExperiments extends JFrame {
 		nPanel.setPreferredSize(new Dimension(0,51));//width is ignored, stretched in the NORTH section of border
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
-		mineLabel = new JLabel("mineLabel");
+		mineLabel = new JLabel("999");
+		mineLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		mineLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		mineLabel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		mineLabel.setBounds(10, 5, 75, 40);
 		nPanel.add(mineLabel);
 		
-		timerLabel = new JLabel("timerLabel");
+		timerLabel = new JLabel("999");
+		timerLabel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		timerLabel.setFont(new Font("Lucida Console", Font.BOLD, 28));
+		timerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		timerLabel.setBounds(383, 5, 75, 40);
 		nPanel.add(timerLabel);
 		

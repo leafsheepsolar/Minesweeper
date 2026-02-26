@@ -21,8 +21,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
 
 public class JavaUI extends JFrame {
 
@@ -68,6 +71,9 @@ public class JavaUI extends JFrame {
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
 		mineCounter = new JLabel();
+		mineCounter.setHorizontalAlignment(SwingConstants.TRAILING);
+		mineCounter.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		mineCounter.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		mineCounter.setBounds(10, 5, 75, 40);
 		nPanel.add(mineCounter);
 		
@@ -104,11 +110,10 @@ public class JavaUI extends JFrame {
 		    }
 		});
 		
-		
-		
 	}
 	
 	public void addBoard(JPanel cPanel) {
+		contentPane.remove(cPanel);
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	    pack();
 	    setMinimumSize(getSize());
@@ -119,14 +124,13 @@ public class JavaUI extends JFrame {
 	}
 	
 	public void gameWon() {
-			gameIndicator.setIcon(IconRegistry.getScaled("GAME_WON","GAME_INDICATOR"));
-			timer.pause();	
+		gameIndicator.setIcon(IconRegistry.getScaled("GAME_WON","GAME_INDICATOR"));
+		timer.pause();	
 	}
 	
-	
 	public void gameLost() {
-			gameIndicator.setIcon(IconRegistry.getScaled("GAME_LOST","GAME_INDICATOR"));
-			timer.pause();
+		gameIndicator.setIcon(IconRegistry.getScaled("GAME_LOST","GAME_INDICATOR"));
+		timer.pause();
 	}
 	
 	//this is to reset the game board
@@ -143,7 +147,7 @@ public class JavaUI extends JFrame {
 	        JOptionPane.YES_NO_OPTION
 	    );
 
-	    // YES → custom values
+	    // yes -> go to custom options
 	    if (customChoice == JOptionPane.YES_OPTION) {
 
 	        JTextField rowField = new JTextField();
@@ -190,21 +194,12 @@ public class JavaUI extends JFrame {
 	        manager = new GameManager(previousRows, previousCols, previousMines, this);
 	    }
 	    
-	    contentPane.add(cPanel, BorderLayout.CENTER);
-	    pack();
-	    setMinimumSize(getSize()); // prevent shrinking below natural grid size
 	}
-	
-	
 	
 	public JPanel getGameBoard() {
 		return this.cPanel;
 	}
 	
-	public void setGameBoard(JPanel cPanel) {
-		this.cPanel = cPanel;
-	}
-
 	public JLabel getMineCounter() {
 		return mineCounter;
 	}
@@ -212,6 +207,5 @@ public class JavaUI extends JFrame {
 	public void setMineCounter(JLabel mineCounter) {
 		this.mineCounter = mineCounter;
 	}
-	
 	
 }

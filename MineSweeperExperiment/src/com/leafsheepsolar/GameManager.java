@@ -48,7 +48,7 @@ public class GameManager {
     	
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if(intGrid[rows][cols]==1) {
+                if(intGrid[rows-1][cols-1]==1) {
                 	//construct cell grid from the int grid
                     grid[r][c] = new Cell(r, c, true, -1, this);
                 }
@@ -86,7 +86,7 @@ public class GameManager {
         }
     }
     
-    public JPanel createBoard() {
+    public void createBoard() {
 	    int buttonSize = Cell.getCellSize();
 
 	    JPanel cPanel = new JPanel(new GridLayout(rows, cols));
@@ -99,31 +99,8 @@ public class GameManager {
 	        for (int c = 0; c < cols; c++)
 	            cPanel.add(grid[r][c]);
 	    
-	    return cPanel;
+	    parent.addBoard(cPanel);
 	}
-    
-    public void createButtonGrid() {
-
-	    JPanel boardPanel = new JPanel(new GridBagLayout());
-	    GridBagConstraints gbc = new GridBagConstraints();
-
-	    gbc.fill = GridBagConstraints.BOTH;
-	    gbc.weightx = 1.0;
-	    gbc.weighty = 1.0;
-
-	    for (int r = 0; r < rows; r++) {
-	        for (int c = 0; c < cols; c++) {
-	            gbc.gridx = c; // column
-	            gbc.gridy = r; // row
-
-	            boardPanel.add(grid[r][c], gbc);
-	        }
-	    }
-
-	    parent.setGameBoard(boardPanel);
-	}
-
-    
     
     // Count the number of adjacent mines for the Cell at the specified location.
     // Uses intGrid where 1 = mine, 0 = no mine.

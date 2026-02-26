@@ -8,19 +8,17 @@ import java.util.Map;
 
 public final class IconRegistry {
 
-    /* ─────────────────────────────────────────────────────────
-     * ICON ROOT DIRECTORY
-     * ───────────────────────────────────────────────────────── */
+	//Icon root file directory
     private static final String ICON_ROOT = "/com/leafsheepsolar/Icons/";
 
-    /* ─────────────────────────────────────────────────────────
-     * CANONICAL ICON SIZE (use for scaled)
-     * ───────────────────────────────────────────────────────── */
+	/*
+	 * Component sizes, add new ones here
+	*/
     private static final Map<String, Rectangle> ICON_SIZES = new HashMap<>();
     
     static {
     	//Icon type size
-	    ICON_SIZES.put("CELL", new Rectangle(24,24));
+	    ICON_SIZES.put("CELL", new Rectangle(22,22));
 	    ICON_SIZES.put("TIMER", new Rectangle(60,45));
 	    ICON_SIZES.put("GAME_INDICATOR", new Rectangle(45,45));
 	    
@@ -29,14 +27,14 @@ public final class IconRegistry {
 	     * ICON_SIZES.put("KEY", new Rectangle(width,height));
 	     */ 
     }
-     /* ─────────────────────────────────────────────────────────
-     * ICON FILE REGISTRY
-     * ADD NEW ICON REFERENCES HERE
-     * ───────────────────────────────────────────────────────── */
+    
+	/*
+	 * Icon file registry, add new files here
+	 */
     private static final Map<String, String> ICON_FILES = new HashMap<>();
 
     static {
-        // JButton number icons
+        // Cell number icons
         ICON_FILES.put("ONE", "1Icon.png");
         ICON_FILES.put("TWO", "2Icon.png");
         ICON_FILES.put("THREE", "3Icon.png");
@@ -62,10 +60,10 @@ public final class IconRegistry {
          * ICON_FILES.put("KEY", "fileName.png");
          */
     }
-
-    /* ─────────────────────────────────────────────────────────
-     * ICON CACHES
-     * ───────────────────────────────────────────────────────── */
+	
+    /*
+	 *	Map registry
+	 */
     private static final Map<String, ImageIcon> BASE_ICON_CACHE = new HashMap<>();
     private static final Map<String, ImageIcon> SCALED_ICON_CACHE = new HashMap<>();
 
@@ -73,10 +71,11 @@ public final class IconRegistry {
         // Prevent instantiation
     }
 
-    /* ─────────────────────────────────────────────────────────
-     * PUBLIC API
-     * ───────────────────────────────────────────────────────── */
-
+	/*
+	 *	Public methods
+	 */
+    
+    
     /**
      * Returns the unscaled icon (original PNG size).
      */
@@ -95,10 +94,9 @@ public final class IconRegistry {
         );
     }
 
-    /* ─────────────────────────────────────────────────────────
-     * INTERNAL HELPERS
-     * ───────────────────────────────────────────────────────── */
-
+	/*
+	 * Helper methods
+	*/
     private static ImageIcon loadBaseIcon(String key) {
         String fileName = ICON_FILES.get(key);
 

@@ -24,7 +24,6 @@ public class GameManager {
     private int numCorrectFlags;
     private int numRevealedCells;
     private JavaUI parent;
-    private JPanel boardPanel;
     /* gameLost -> 1 means the game is lost and thus reveal only the first mine with the red background to indicate that it was the one chosen,
     *  whereas the rest of the mines will be revealed with normal backgrounds
     */
@@ -37,7 +36,6 @@ public class GameManager {
         this.cols = cols;
         gameLost = false;
         startTimer = true;
-        boardPanel = parent.getGameBoard();
         grid = new Cell[rows][cols];
         intGrid = new int[rows][cols];
         initialize();
@@ -48,7 +46,7 @@ public class GameManager {
     	
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if(intGrid[rows-1][cols-1]==1) {
+                if(intGrid[rows][cols]==1) {
                 	//construct cell grid from the int grid
                     grid[r][c] = new Cell(r, c, true, -1, this);
                 }

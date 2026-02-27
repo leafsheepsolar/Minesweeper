@@ -9,7 +9,7 @@ import java.util.Map;
 public final class IconRegistry {
 
 	//Icon root file directory
-    private static final String ICON_ROOT = "/com/leafsheepsolar/Icons/";
+    private static final String ICON_ROOT = "/Minesweeper/resources/Icons";
 
 	/*
 	 * Component sizes, add new ones here

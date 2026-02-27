@@ -46,18 +46,18 @@ public class StopwatchLabel extends JLabel {
     //configures gui elements 
 	private void configure() {
 		
-		Font digitalAlarmFont;
+		Font configureFont;
 	    try {
-	    	digitalAlarmFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/resources/alarm clock.ttf"));
-	    	digitalAlarmFont = digitalAlarmFont.deriveFont(28f);
+	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/Minesweeper/resources/alarm clock.ttf"));
+	    	configureFont = configureFont.deriveFont(28f);
 	    }
 	    catch (FontFormatException | IOException e){
 	    	e.printStackTrace();
-	    	digitalAlarmFont = new Font("Arial", Font.PLAIN, 28);
+	    	configureFont = new Font("Arial", Font.PLAIN, 28);
 	    }
 		
 		setHorizontalAlignment(SwingConstants.TRAILING);
-		setFont(digitalAlarmFont);
+		setFont(configureFont);
 		setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		setBackground(new Color(128,128,128));
 	}

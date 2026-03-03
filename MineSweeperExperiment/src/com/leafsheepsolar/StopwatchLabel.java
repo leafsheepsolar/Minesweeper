@@ -48,7 +48,7 @@ public class StopwatchLabel extends JLabel {
 		
 		Font configureFont;
 	    try {
-	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/Minesweeper/resources/alarm clock.ttf"));
+	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
 	    	configureFont = configureFont.deriveFont(28f);
 	    }
 	    catch (FontFormatException | IOException e){

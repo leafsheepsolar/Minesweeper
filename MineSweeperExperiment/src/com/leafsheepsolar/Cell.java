@@ -28,7 +28,7 @@ public class Cell extends JButton {
 		isRevealed = false; //all cells start blank
 		isFlagged = false;
 		configureButton();
-		addLeftRightClickActions();
+		addActions();
 //		chordOn = manager.isChordOn();
 		
 	}
@@ -38,6 +38,7 @@ public class Cell extends JButton {
 	    setBorderPainted(false);
 	    setFocusable(false);
 	    setContentAreaFilled(false);
+	    setIcon(IconRegistry.getScaled("BLANK", "CELL"));
 	}
 
 	
@@ -50,7 +51,7 @@ public class Cell extends JButton {
 
 
 	//adds actions for right & left clicks () 
-	private void addLeftRightClickActions() {
+	private void addActions() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -59,11 +60,12 @@ public class Cell extends JButton {
 					if(!isRevealed()) {
 						reveal();
 					}
-					else if(canChord()) {// right click --> places flags
+					
+					else if(canChord()) {
 						chord(); //if it is revealed, check if it can chord
 					}
 					
-				} else if (SwingUtilities.isRightMouseButton(e)) {
+				} else if (SwingUtilities.isRightMouseButton(e)) {// right click --> places/removes flags
 					if(!isRevealed) {
 						flag();
 					}

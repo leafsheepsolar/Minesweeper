@@ -29,7 +29,6 @@ import javax.swing.border.SoftBevelBorder;
 
 public class JavaUI extends JFrame {
 
-	final protected BoardPresets expertBoard = new BoardPresets(16,30,99); //I need to rethink how to use presets here, this doesn't seem optimal.
 	private JPanel contentPane, nPanel, cPanel;
 	private JButton gameIndicator;
 	private StopwatchLabel timer;
@@ -112,11 +111,89 @@ public class JavaUI extends JFrame {
 		
 	}
 	
+	//this is to reset the game board
+		private void resetBoard() {
+
+		    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
+		    timer.reset();
+
+		    // Step 1: Ask if user wants custom values
+		    int customChoice = JOptionPane.showConfirmDialog(
+		        gameIndicator,
+		        "Use custom board values?",
+		        "Game Setup",
+		        JOptionPane.YES_NO_OPTION
+		    );
+
+		    // yes -> go to custom options
+		    if (customChoice == JOptionPane.YES_OPTION) {
+
+		        JTextField rowField = new JTextField();
+		        JTextField colField = new JTextField();
+		        JTextField mineField = new JTextField();
+
+		        Object[] inputs = {
+		            "Rows:", rowField,
+		            "Columns:", colField,
+		            "Mines:", mineField
+		        };
+
+		        int inputResult = JOptionPane.showConfirmDialog(
+		            gameIndicator,
+		            inputs,
+		            "Enter Custom Values",
+		            JOptionPane.OK_CANCEL_OPTION
+		        );
+
+		        if (inputResult == JOptionPane.OK_OPTION) {
+		            int rows = Integer.parseInt(rowField.getText());
+		            int cols = Integer.parseInt(colField.getText());
+		            int mines = Integer.parseInt(mineField.getText());
+		            previousRows = rows;
+		            previousCols = cols;
+		            previousMines = mines;
+		            manager = new GameManager(rows, cols, mines, this);
+		        }
+
+		        return;
+		    }
+
+		    // not custom -> use presets or past choice?
+		    int reuseChoice = JOptionPane.showConfirmDialog(
+		        gameIndicator,
+		        "Use default values?\n(rows: 16, cols: 30, mines: 99)\n\nSelect NO to reuse previous values.",
+		        "Game Setup",
+		        JOptionPane.YES_NO_OPTION
+		    );
+
+		    if (reuseChoice == JOptionPane.YES_OPTION) {
+		        manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
+		    } else {
+		        manager = new GameManager(previousRows, previousCols, previousMines, this);
+		    }
+		    
+		}
+	
 	public void addBoard(JPanel cPanel) {
 		contentPane.remove(cPanel);
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	    pack();
 	    setMinimumSize(getSize());
+	}
+	
+	public JPanel getGameBoard() {
+		return this.cPanel;
+	}
+	
+	public JLabel getMineCounter() {
+		return mineCounter;
+	}
+
+	public void setMineCounter(JLabel mineCounter) {
+		nPanel.remove(mineCounter);
+		nPanel.add(mineCounter);
+		pack();
+		setMinimumSize(getSize());
 	}
 	
 	public void startTimer() {
@@ -133,79 +210,5 @@ public class JavaUI extends JFrame {
 		timer.pause();
 	}
 	
-	//this is to reset the game board
-	private void resetBoard() {
-
-	    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
-	    timer.reset();
-
-	    // Step 1: Ask if user wants custom values
-	    int customChoice = JOptionPane.showConfirmDialog(
-	        gameIndicator,
-	        "Use custom board values?",
-	        "Game Setup",
-	        JOptionPane.YES_NO_OPTION
-	    );
-
-	    // yes -> go to custom options
-	    if (customChoice == JOptionPane.YES_OPTION) {
-
-	        JTextField rowField = new JTextField();
-	        JTextField colField = new JTextField();
-	        JTextField mineField = new JTextField();
-
-	        Object[] inputs = {
-	            "Rows:", rowField,
-	            "Columns:", colField,
-	            "Mines:", mineField
-	        };
-
-	        int inputResult = JOptionPane.showConfirmDialog(
-	            gameIndicator,
-	            inputs,
-	            "Enter Custom Values",
-	            JOptionPane.OK_CANCEL_OPTION
-	        );
-
-	        if (inputResult == JOptionPane.OK_OPTION) {
-	            int rows = Integer.parseInt(rowField.getText());
-	            int cols = Integer.parseInt(colField.getText());
-	            int mines = Integer.parseInt(mineField.getText());
-	            previousRows = rows;
-	            previousCols = cols;
-	            previousMines = mines;
-	            manager = new GameManager(rows, cols, mines, this);
-	        }
-
-	        return;
-	    }
-
-	    // not custom -> use presets or past choice?
-	    int reuseChoice = JOptionPane.showConfirmDialog(
-	        gameIndicator,
-	        "Use default values?\n(rows: 16, cols: 30, mines: 99)\n\nSelect NO to reuse previous values.",
-	        "Game Setup",
-	        JOptionPane.YES_NO_OPTION
-	    );
-
-	    if (reuseChoice == JOptionPane.YES_OPTION) {
-	        manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
-	    } else {
-	        manager = new GameManager(previousRows, previousCols, previousMines, this);
-	    }
-	    
-	}
-	
-	public JPanel getGameBoard() {
-		return this.cPanel;
-	}
-	
-	public JLabel getMineCounter() {
-		return mineCounter;
-	}
-
-	public void setMineCounter(JLabel mineCounter) {
-		this.mineCounter = mineCounter;
-	}
 	
 }

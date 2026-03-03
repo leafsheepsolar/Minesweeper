@@ -9,9 +9,9 @@ import java.util.Map;
 public final class IconRegistry {
 
 	//Icon root file directory
-    private static final String ICON_ROOT = "/Minesweeper/resources/Icons";
+    private static final String ICON_ROOT = "/Icons/";
 
-	/*
+    /*
 	 * Component sizes, add new ones here
 	*/
     private static final Map<String, Rectangle> ICON_SIZES = new HashMap<>();
@@ -61,9 +61,7 @@ public final class IconRegistry {
          */
     }
 	
-    /*
-	 *	Map registry
-	 */
+    //map registry 
     private static final Map<String, ImageIcon> BASE_ICON_CACHE = new HashMap<>();
     private static final Map<String, ImageIcon> SCALED_ICON_CACHE = new HashMap<>();
 
@@ -108,10 +106,10 @@ public final class IconRegistry {
 
         if (url == null) {
             throw new IllegalStateException(
-                "Icon file not found: " + ICON_ROOT + fileName
+                "Icon file not found: " + ICON_ROOT +  fileName
             );
         }
-
+        
         return new ImageIcon(url);
     }
 

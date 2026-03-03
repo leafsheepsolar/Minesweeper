@@ -5,7 +5,9 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,13 +22,11 @@ public class GameManager {
     private final int numMines; 
     private int numFlags;
     private boolean startTimer;
-    private boolean gameLost; //game == 0 -> game isn't lost, game == anything else -> lost
+    private boolean gameLost; 
     private int numCorrectFlags;
     private int numRevealedCells;
     private JavaUI parent;
-    /* gameLost -> 1 means the game is lost and thus reveal only the first mine with the red background to indicate that it was the one chosen,
-    *  whereas the rest of the mines will be revealed with normal backgrounds
-    */
+
     
 	/** <p> Manages making the cell board and the methods associated with it. */
     public GameManager(int rows, int cols, int numMines, JavaUI parent) {
@@ -46,7 +46,7 @@ public class GameManager {
     	
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if(intGrid[rows][cols]==1) {
+                if(intGrid[r][c]==1) {
                 	//construct cell grid from the int grid
                     grid[r][c] = new Cell(r, c, true, -1, this);
                 }
@@ -86,13 +86,18 @@ public class GameManager {
     
     public void createBoard() {
 	    int buttonSize = Cell.getCellSize();
-
+	    
 	    JPanel cPanel = new JPanel(new GridLayout(rows, cols));
+	    cPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 	    int cPanelWidth = buttonSize * cols;
 	    int cPanelHeight = buttonSize * rows;
 	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);
 	    cPanel.setPreferredSize(cPanelDim);
 
+	    JLabel mineCounter = parent.getMineCounter();
+	    
+	    
+	    
 	    for (int r = 0; r < rows; r++)
 	        for (int c = 0; c < cols; c++)
 	            cPanel.add(grid[r][c]);
@@ -104,7 +109,7 @@ public class GameManager {
     // Uses intGrid where 1 = mine, 0 = no mine.
     // Checks all 8 adjacent cells plus the cell itself with bounds checking.
     private int countAdjacentMines(int row, int col) {
-        int mineCounter = 0;
+        int mineCount = 0;
 
         // Check all 8 adjacent cells plus the center cell
         for (int r = row - 1; r <= row + 1; r++) {
@@ -112,13 +117,13 @@ public class GameManager {
                 // Bounds check to prevent out of bounds access
                 if (r >= 0 && r < rows && c >= 0 && c < cols) {
                     if (intGrid[r][c] == 1) {
-                        mineCounter++;
+                        mineCount++;
                     }
                 }
             }
         }
 
-        return mineCounter;
+        return mineCount;
     }
 
     //TODO: does it work?
@@ -148,10 +153,9 @@ public class GameManager {
         int r = cell.getRow();
         int c = cell.getCol();
 
-        
-        
-        // Bounds check
+        // check bounds
         if (r < 0 || r >= rows || c < 0 || c >= cols) {
+            System.out.println("out of bounds request - at " + r + " and " + c);
             return;
         }
 
@@ -195,12 +199,8 @@ public class GameManager {
     		for(int c = 0; c<cols; c++) {
     			if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) { 
     				grid[r][c].reveal();//if a mine is not flagged then reveal the tile. If it is flagged and is a mine dont reveal
+    				grid[r][c].setEnabled(false);
     			}
-    		}
-    	}
-    	for(int r = 0; r<rows; r++) {
-    		for(int c = 0; c<cols; c++) {
-    			grid[r][c].setEnabled(false);
     		}
     	}
 	}

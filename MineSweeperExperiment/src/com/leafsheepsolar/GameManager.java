@@ -153,7 +153,7 @@ public class GameManager {
         int r = cell.getRow();
         int c = cell.getCol();
 
-        // check bounds
+        //out of bounds?
         if (r < 0 || r >= rows || c < 0 || c >= cols) {
             System.out.println("out of bounds request - at " + r + " and " + c);
             return;
@@ -164,7 +164,6 @@ public class GameManager {
             return;
         }
 
-        // Reveal current cell
         cell.reveal();
 
         // Stop expanding if numbered cell

@@ -38,14 +38,15 @@ public class Cell extends JButton {
 	    setBorderPainted(false);
 	    setFocusable(false);
 	    setContentAreaFilled(false);
-	    setIcon(IconRegistry.getScaled("BLANK", "CELL"));
+	    setIcon(IconRegistry.getScaled("UNREVEALED", "CELL"));
 	}
 
 	
 	private boolean canChord() {
-		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(this)) {//cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
+		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(this) || adjacentMines == 0) {//blank cell? -> chordable | not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
 			return true;
 		}
+		
 		return false;
 	}
 
@@ -93,7 +94,7 @@ public class Cell extends JButton {
 				manager.addFlag(isMine);
 			}
 			else {//if it is already flagged, unflag it
-				setIcon(IconRegistry.getScaled("BLANK","CELL"));
+				setIcon(IconRegistry.getScaled("UNREVEALED","CELL"));
 				isFlagged = false;
 				manager.removeFlag(isMine);
 			}
@@ -116,13 +117,13 @@ public class Cell extends JButton {
 		        case 6 -> setIcon(IconRegistry.getScaled("SIX","CELL"));
 		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
 		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
-		        default -> setIcon(IconRegistry.getScaled("BLANK","CELL"));
+		        default -> setIcon(IconRegistry.getScaled("EMPTY","CELL"));
 				}
 				isRevealed = true;
 				manager.addRevealedCell();
 			}else { 
 				if(manager.getGameLost() == false) {//if this is the first mine revealed then it was the cause of the loss and should have a red background
-					setIcon(IconRegistry.getScaled("PRESSED_MINE","CELL"));
+					setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
 					manager.gameLost();
 				}else { 
 					setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background

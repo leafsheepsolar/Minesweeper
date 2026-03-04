@@ -45,10 +45,11 @@ public final class IconRegistry {
         ICON_FILES.put("EIGHT", "8Icon.png");
 
         // Cell state icons
-        ICON_FILES.put("BLANK", "blankIcon.png");
+        ICON_FILES.put("UNREVEALED", "unrevealedIcon.png");
         ICON_FILES.put("FLAG", "flagIcon.png");
-        ICON_FILES.put("PRESSED_MINE", "pressedMineIcon.png");
+        ICON_FILES.put("CLICKED_MINE", "clickedMineIcon.png");
         ICON_FILES.put("REVEALED_MINE", "revealedMineIcon.png");
+        ICON_FILES.put("EMPTY", "emptyIcon.png");
 
         // Game indicator icons
         ICON_FILES.put("GAME_LOST", "gameLostIcon.png");
@@ -93,7 +94,7 @@ public final class IconRegistry {
     }
 
 	/*
-	 * Helper methods
+	 * Internal methods
 	*/
     private static ImageIcon loadBaseIcon(String key) {
         String fileName = ICON_FILES.get(key);

@@ -114,7 +114,7 @@ public class GameManager {
         // Check all 8 adjacent cells plus the center cell
         for (int r = row - 1; r <= row + 1; r++) {
             for (int c = col - 1; c <= col + 1; c++) {
-                // Bounds check to prevent out of bounds access
+                // Bounds check 
                 if (r >= 0 && r < rows && c >= 0 && c < cols) {
                     if (intGrid[r][c] == 1) {
                         mineCount++;
@@ -137,7 +137,7 @@ public class GameManager {
 		
 		for (int r = row - 1; r <= row + 1; r++) {
             for (int c = col - 1; c <= col + 1; c++) {
-                // Bounds check to prevent out of bounds access
+                // Bounds check 
                 if (r >= 0 && r < rows && c >= 0 && c < cols) {
                     if (grid[r][c].isFlagged()){
                         num++;
@@ -145,45 +145,37 @@ public class GameManager {
                 }
             }
         }
-		
+
 		return num;
 	}
 
     public void chord(Cell cell) {
-        int r = cell.getRow();
-        int c = cell.getCol();
+        int row = cell.getRow();
+        int col = cell.getCol();
 
-        //out of bounds?
-        if (r < 0 || r >= rows || c < 0 || c >= cols) {
-            System.out.println("out of bounds request - at " + r + " and " + c);
+        //dont access cells out of bounds
+        if (row < 0 || row >= rows || col < 0 || col >= cols) {
             return;
         }
 
-        // Stop conditions
+        //stop condition
         if (cell.isRevealed() || cell.isMine()) {
             return;
         }
 
         cell.reveal();
 
-        // Stop expanding if numbered cell
+        //secondary stop condition, prevent numbered cells from expanding
         if (cell.getAdjacentMines() > 0) {
             return;
         }
         
-        
-        //int meanings -> dr, dc (delta row, delta column) delta meaning changes. nr, nc (new row, new column)
-        
-        // Recursively reveal neighbors
-        for (int dr = -1; dr <= 1; dr++) {
-            for (int dc = -1; dc <= 1; dc++) {
-                if (dr != 0 || dc != 0) {
-                    int nr = r + dr;
-                    int nc = c + dc;
-
-                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-                        chord(grid[nr][nc]);
-                    }
+        //reveal adjacent cells
+        for (int r = row - 1; r <= row + 1; r++) {
+            for (int c = col - 1; c <= col + 1; c++) {
+                // Bounds check 
+                if (r >= 0 && r < rows && c >= 0 && c < cols) {
+                	chord(grid[r][c]);
                 }
             }
         }

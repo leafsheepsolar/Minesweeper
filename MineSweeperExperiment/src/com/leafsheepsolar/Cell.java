@@ -58,7 +58,7 @@ public class Cell extends JButton {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals tile, chording
-					if(!isRevealed()) {
+					if(!isRevealed && !isFlagged) {
 						reveal();
 					}
 					

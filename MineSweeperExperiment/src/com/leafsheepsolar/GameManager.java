@@ -19,7 +19,7 @@ public class GameManager {
     private final int cols;
     private Cell[][] grid;
     private int[][] intGrid;//simplifying the randomizing
-    private final int numMines; 
+    private final int mines; 
     private int numFlags;
     private boolean startTimer;
     private boolean gameLost; 
@@ -29,9 +29,9 @@ public class GameManager {
 
     
 	/** <p> Manages making the cell board and the methods associated with it. */
-    public GameManager(int rows, int cols, int numMines, JavaUI parent) {
+    public GameManager(int rows, int cols, int mines, JavaUI parent) {
     	this.parent = parent;
-        this.numMines = numMines;
+        this.mines = mines;
         this.rows = rows;
         this.cols = cols;
         gameLost = false;
@@ -55,11 +55,13 @@ public class GameManager {
                 }
             }
         }
+        
         createBoard();
+        parent.setPreviousSettings(rows,cols,mines);
     }
     
     /* place mines in intGrid
-     * 1 = mine, 0 = not mine. Given numMines, randomize mine placement within the int[][] intGrid
+     * 1 = mine, 0 = not mine. Given mines, randomize mine placement within the int[][] intGrid
      */
     private void placeMines() {
         //starts the array with only 0's
@@ -73,7 +75,7 @@ public class GameManager {
     	int placed = 0;
         Random rand = new Random();
         
-        while (placed <= numMines) {
+        while (placed <= mines) {
             int r = rand.nextInt(rows);
             int c = rand.nextInt(cols);
 
@@ -219,7 +221,7 @@ public class GameManager {
 				 * Locate the last unrevealed mine cell and flag it.
 				 */
     		}
-    		if(numCorrectFlags == numMines - 1) { //if theres only one mine left to flag, youre done
+    		if(numCorrectFlags == mines - 1) { //if theres only one mine left to flag, youre done
     			parent.gameWon(); //TODO: fix this
     		}
     	}
@@ -253,7 +255,7 @@ public class GameManager {
     }
 
     public int getMines() {
-        return numMines;
+        return mines;
     }
 
 	public void setGameLost(boolean gameLost) {

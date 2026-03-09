@@ -109,6 +109,8 @@ public class JavaUI extends JFrame {
 		    }
 		});
 		
+		manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
+		
 	}
 	
 	//this is to reset the game board
@@ -149,9 +151,6 @@ public class JavaUI extends JFrame {
 		            int rows = Integer.parseInt(rowField.getText());
 		            int cols = Integer.parseInt(colField.getText());
 		            int mines = Integer.parseInt(mineField.getText());
-		            previousRows = rows;
-		            previousCols = cols;
-		            previousMines = mines;
 		            manager = new GameManager(rows, cols, mines, this);
 		        }
 
@@ -174,8 +173,23 @@ public class JavaUI extends JFrame {
 		    
 		}
 	
+	/**
+	 * adds the reset board (not the intial)
+	 * 
+	 * @see #addBoard1(JPanel cPanel)
+	*/
 	public void addBoard(JPanel cPanel) {
-		contentPane.remove(cPanel);
+		contentPane.remove(this.cPanel);
+		contentPane.add(cPanel, BorderLayout.CENTER);
+	    pack();
+	    setMinimumSize(getSize());
+	}
+	
+	/**
+	 * adds the intital board
+	 * @see #addBoard(JPanel cPanel)
+	*/
+	public void addBoard1(JPanel cPanel) {//secondary, set the cPanel in this method as well as add
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	    pack();
 	    setMinimumSize(getSize());
@@ -184,6 +198,13 @@ public class JavaUI extends JFrame {
 	public JPanel getGameBoard() {
 		return this.cPanel;
 	}
+	
+	public void setPreviousSettings(int rows, int cols, int mines) {
+		rows = previousRows;
+		cols = previousCols;
+		mines = previousMines;
+	}
+	
 	
 	public JLabel getMineCounter() {
 		return mineCounter;

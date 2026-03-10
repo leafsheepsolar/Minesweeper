@@ -61,7 +61,8 @@ public class Cell extends JButton {
 					
 					if(!isRevealed && !isFlagged) {
 						reveal();
-					} else if(canChord()) {
+					}
+					if(canChord()) {
 						chord(); //if it is revealed, check if it can chord
 					}
 					
@@ -108,6 +109,7 @@ public class Cell extends JButton {
 			if(!isMine) {
 				//sets the icon based on the num of adjacent mines
 				switch(adjacentMines) {
+				case 0 -> setIcon(IconRegistry.getScaled("EMPTY","CELL"));
 				case 1 -> setIcon(IconRegistry.getScaled("ONE","CELL"));
 		        case 2 -> setIcon(IconRegistry.getScaled("TWO","CELL"));
 		        case 3 -> setIcon(IconRegistry.getScaled("THREE","CELL"));
@@ -116,7 +118,7 @@ public class Cell extends JButton {
 		        case 6 -> setIcon(IconRegistry.getScaled("SIX","CELL"));
 		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
 		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
-		        default -> setIcon(IconRegistry.getScaled("EMPTY","CELL"));
+		        default -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
 				}
 				isRevealed = true;
 				manager.addRevealedCell();

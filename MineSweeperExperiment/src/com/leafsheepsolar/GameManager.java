@@ -168,7 +168,7 @@ public class GameManager {
         cell.reveal();
 
         //secondary stop condition, prevent numbered cells from expanding
-        if (cell.getAdjacentMines() > 0) {
+        if (cell.getAdjacentMines() != 0) {
             return;
         }
         

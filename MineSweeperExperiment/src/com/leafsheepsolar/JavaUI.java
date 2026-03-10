@@ -173,26 +173,24 @@ public class JavaUI extends JFrame {
 		    
 		}
 	
-	/**
-	 * adds the reset board (not the intial)
-	 * 
-	 * @see #addBoard1(JPanel cPanel)
-	*/
-	public void addBoard(JPanel cPanel) {
+		public void addBoard(JPanel cPanel) {
+		if(this.cPanel == null) {//if there isnt a cPanel, make a default one
+			addBoard1(cPanel);
+			return;
+		}
 		contentPane.remove(this.cPanel);
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	    pack();
 	    setMinimumSize(getSize());
+	    this.cPanel = cPanel;
 	}
 	
-	/**
-	 * adds the intital board
-	 * @see #addBoard(JPanel cPanel)
-	*/
-	public void addBoard1(JPanel cPanel) {//secondary, set the cPanel in this method as well as add
+	
+	private void addBoard1(JPanel cPanel) {//makes a default cPanel
 		contentPane.add(cPanel, BorderLayout.CENTER);
 	    pack();
 	    setMinimumSize(getSize());
+	    this.cPanel = cPanel;
 	}
 	
 	public JPanel getGameBoard() {

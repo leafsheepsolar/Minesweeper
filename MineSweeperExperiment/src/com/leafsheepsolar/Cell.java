@@ -43,7 +43,7 @@ public class Cell extends JButton {
 
 	
 	private boolean canChord() {
-		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(this) || adjacentMines == 0) {//blank cell? -> chordable | not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
+		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(row,col) || adjacentMines == 0) {//blank cell? -> chordable | not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
 			return true;
 		}
 	
@@ -63,7 +63,7 @@ public class Cell extends JButton {
 						reveal();
 					}
 					if(canChord()) {
-						chord(); //if it is revealed, check if it can chord
+						chord();
 					}
 					
 				} else if (SwingUtilities.isRightMouseButton(e)) {// right click --> places/removes flags
@@ -81,6 +81,10 @@ public class Cell extends JButton {
 
 	protected void chord() {
 		manager.chord(this);
+	}
+	
+	public void floodFill() {
+		
 	}
 
 	//flagging the given tile

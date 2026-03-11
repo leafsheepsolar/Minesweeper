@@ -131,37 +131,59 @@ public class GameManager {
     //TODO: does it work?
     // Create all Cell objects once, if the cell is a bomb, adjacentMines = -1.
     
-    
-    public int adjacentCellsFlagged(Cell cell) {
-		int num = 0;
-		int row = cell.getRow();
-		int col = cell.getCol();
-		
-		for (int r = row - 1; r <= row + 1; r++) {
+    public int adjacentCellsFlagged(int row, int col) {
+        int flagCount = 0;
+
+        // Check all 8 adjacent cells plus the center cell
+        for (int r = row - 1; r <= row + 1; r++) {
             for (int c = col - 1; c <= col + 1; c++) {
                 // Bounds check 
                 if (r >= 0 && r < rows && c >= 0 && c < cols) {
-                    if (grid[r][c].isFlagged()){
-                        num++;
+                    if (grid[r][c].isFlagged()) {
+                        flagCount++;
                     }
                 }
             }
         }
 
-		return num;
-	}
-
+        return flagCount;
+    }
+    
+	/**
+	 * floodfills the given cell (assumes unrevealed)
+	*/
+    public void floodFill(Cell cell) {
+    	if(!(cell.isRevealed())) {
+    		System.out.println("This cell is already revealed");
+    		return;
+    	}
+        int row = cell.getRow();
+        int col = cell.getCol();
+        cell.reveal();
+        
+       if(cell.getAdjacentMines() == 0 ) {
+    	   
+    	   for (int r = row - 1; r <= row + 1; r++) {
+            for (int c = col - 1; c <= col + 1; c++) {
+                // Bounds check 
+                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].isRevealed())/*dont reveal a cell thats already revealed*/) {
+                	floodFill(grid[r][c]);
+                }
+            }
+        }
+    	   
+       }
+    }
+    
+	/**
+	 * chords the given cell
+	*/
     public void chord(Cell cell) {
         int row = cell.getRow();
         int col = cell.getCol();
 
-        //dont access cells out of bounds
-        if (row < 0 || row >= rows || col < 0 || col >= cols) {
-            return;
-        }
-
         //stop condition
-        if (cell.isRevealed() || cell.isMine()) {
+        if (cell.isMine()) {
             return;
         }
 

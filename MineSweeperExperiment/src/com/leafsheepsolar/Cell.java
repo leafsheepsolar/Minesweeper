@@ -84,7 +84,7 @@ public class Cell extends JButton {
 	}
 	
 	public void floodFill() {
-		
+		manager.floodFill(this);
 	}
 
 	//flagging the given tile
@@ -95,12 +95,12 @@ public class Cell extends JButton {
 			if(!isFlagged) {//if it isnt already flagged, flag it
 				setIcon(IconRegistry.getScaled("FLAG","CELL"));
 				isFlagged = true;
-				manager.addFlag(isMine);
+				manager.addFlag();
 			}
 			else {//if it is already flagged, unflag it
 				setIcon(IconRegistry.getScaled("UNREVEALED","CELL"));
 				isFlagged = false;
-				manager.removeFlag(isMine);
+				manager.removeFlag();
 			}
 		}
 	}
@@ -122,7 +122,10 @@ public class Cell extends JButton {
 		        case 6 -> setIcon(IconRegistry.getScaled("SIX","CELL"));
 		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
 		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
-		        default -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
+		        default -> {
+		        	System.out.println("Switching on adjMines returned default.");
+		        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));		
+		        	}
 				}
 				isRevealed = true;
 				manager.addRevealedCell();

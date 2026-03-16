@@ -203,16 +203,12 @@ public class JavaUI extends JFrame {
 		mines = previousMines;
 	}
 	
-	
-	public JLabel getMineCounter() {
-		return mineCounter;
+	public String getMineCounterText() {
+		return mineCounter.getText();
 	}
-
-	public void setMineCounter(JLabel mineCounter) {
-		nPanel.remove(mineCounter);
-		nPanel.add(mineCounter);
-		pack();
-		setMinimumSize(getSize());
+	
+	public void updateMineCounterText(String text) {
+		mineCounter.setText(text);;
 	}
 	
 	public void startTimer() {

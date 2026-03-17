@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -13,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -69,18 +71,25 @@ public class JavaUI extends JFrame {
 		nPanel.setPreferredSize(new Dimension(0,51));//width is ignored, stretched in the NORTH section of border
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
+		//set up the mineCounter
 		mineCounter = new JLabel();
 		mineCounter.setHorizontalAlignment(SwingConstants.TRAILING);
-		mineCounter.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		Font configureFont;//set the font
+	    try {
+	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
+	    	configureFont = configureFont.deriveFont(Font.BOLD,28f);
+	    }
+	    catch (FontFormatException | IOException e){
+	    	e.printStackTrace();
+	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
+	    }
+	    setFont(configureFont);
 		mineCounter.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		mineCounter.setBounds(10, 5, 75, 40);
 		nPanel.add(mineCounter);
 		
 		//setting up the timer
 		timer = new StopwatchLabel();
-		timer.setBackground(new Color(128,128,128));
-		timer.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 4));
-		timer.setFont(new Font("Monospaced", Font.BOLD, 16));
 		timer.setBounds(383, 5, 75, 40);
 		nPanel.add(timer);
 		//showing 000 on the timer
@@ -217,7 +226,7 @@ public class JavaUI extends JFrame {
 	
 	public void gameWon() {
 		gameIndicator.setIcon(IconRegistry.getScaled("GAME_WON","GAME_INDICATOR"));
-		timer.pause();	
+		timer.pause();
 	}
 	
 	public void gameLost() {

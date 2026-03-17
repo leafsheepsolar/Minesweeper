@@ -43,10 +43,18 @@ public class Cell extends JButton {
 
 	
 	private boolean canChord() {
-		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(row,col) || adjacentMines == 0) {//blank cell? -> chordable | not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
+		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(row,col)) {//not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
 			return true;
 		}
 	
+		return false;
+	}
+	
+	private boolean canFloodFill() {
+		if(isRevealed == false && isFlagged == false) {//must be unrevealed, unflagged, not a mine
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -59,8 +67,8 @@ public class Cell extends JButton {
 				
 				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals tile, chording
 					
-					if(!isRevealed && !isFlagged) {
-						reveal();
+					if(canFloodFill()) {
+						floodFill();
 					}
 					if(canChord()) {
 						chord();
@@ -83,6 +91,9 @@ public class Cell extends JButton {
 		manager.chord(this);
 	}
 	
+	/**
+	 * initiates the revealing process of cells
+	*/
 	public void floodFill() {
 		manager.floodFill(this);
 	}
@@ -110,6 +121,7 @@ public class Cell extends JButton {
 	 */	
 	public void reveal() {
 		if(!isRevealed) {
+			isRevealed = true;
 			if(!isMine) {
 				//sets the icon based on the num of adjacent mines
 				switch(adjacentMines) {
@@ -123,20 +135,19 @@ public class Cell extends JButton {
 		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
 		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
 		        default -> {
-		        	System.out.println("Switching on adjMines returned default.");
+		        	System.out.println("Switching on adjMines returned default for cell at row "+row+" and col "+col+".");
 		        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));		
 		        	}
 				}
-				isRevealed = true;
 				manager.addRevealedCell();
-			}else { 
-				if(manager.getGameLost() == false) {//if this is the first mine revealed then it was the cause of the loss and should have a red background
-					setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
-					manager.gameLost();
-				}else { 
-					setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background
-				}
-			}	
+				return;
+			}
+			if(manager.getGameLost() == false) {//if this mine was the cause of the loss, color it red
+				setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
+				manager.gameLost();
+			}else {
+				setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background
+			}
 		}
 	}
 	

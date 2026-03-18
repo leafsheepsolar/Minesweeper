@@ -83,7 +83,7 @@ public class JavaUI extends JFrame {
 	    	e.printStackTrace();
 	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
 	    }
-	    setFont(configureFont);
+	    mineCounter.setFont(configureFont);
 		mineCounter.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		mineCounter.setBounds(10, 5, 75, 40);
 		nPanel.add(mineCounter);
@@ -99,7 +99,7 @@ public class JavaUI extends JFrame {
 		//set up the gameIndicator
 		gameIndicator = new JButton();
 		gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
-		gameIndicator.addActionListener(new ActionListener(){ 
+		gameIndicator.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				resetBoard(); //the dialogue is a popup
 			}

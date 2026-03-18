@@ -41,7 +41,6 @@ public class Cell extends JButton {
 	    setIcon(IconRegistry.getScaled("UNREVEALED", "CELL"));
 	}
 
-	
 	private boolean canChord() {
 		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(row,col)) {//not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
 			return true;
@@ -50,14 +49,13 @@ public class Cell extends JButton {
 		return false;
 	}
 	
-	private boolean canFloodFill() {
-		if(isRevealed == false && isFlagged == false) {//must be unrevealed, unflagged, not a mine
+	private boolean canReveal() {
+		if(isRevealed == false && isFlagged == false) {//must be unrevealed, unflagged
 			return true;
 		}
 		
 		return false;
 	}
-
 
 	//adds actions for right & left clicks () 
 	private void addActions() {
@@ -66,10 +64,10 @@ public class Cell extends JButton {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals tile, chording
-					
-					if(canFloodFill()) {
-						floodFill();
+					if(canReveal()) {
+						reveal();
 					}
+					
 					if(canChord()) {
 						chord();
 					}
@@ -148,6 +146,16 @@ public class Cell extends JButton {
 			}else {
 				setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background
 			}
+			reveal1();
+		}
+	}
+	
+	/**
+	 * calls floodfill
+	 */	
+	private void reveal1() {
+		if(canReveal()) {
+			floodFill();
 		}
 	}
 	

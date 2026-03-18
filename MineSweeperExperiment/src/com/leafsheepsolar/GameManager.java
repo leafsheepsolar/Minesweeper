@@ -153,7 +153,7 @@ public class GameManager {
     		System.out.println("This cell is already revealed");
     		System.out.println();
     		return;
-    	}
+    	}//delete when done
     	cell.reveal();
         int row = cell.getRow();
         int col = cell.getCol();

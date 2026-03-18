@@ -40,6 +40,8 @@ public class StopwatchLabel extends JLabel {
             }
         });
         
+        //One for display seconds, the other for miliseconds when reporting the final time. 
+        
         configure();
     }
 
@@ -49,7 +51,7 @@ public class StopwatchLabel extends JLabel {
 		Font configureFont;
 	    try {
 	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
-	    	configureFont = configureFont.deriveFont(28f);
+	    	configureFont = configureFont.deriveFont(Font.BOLD,28f);
 	    }
 	    catch (FontFormatException | IOException e){
 	    	e.printStackTrace();

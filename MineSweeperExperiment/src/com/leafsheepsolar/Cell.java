@@ -7,26 +7,26 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 public class Cell extends JButton {
-	static private int cellSize = 22;
+	static private int cellSize = 24; //in pizels
 	
-	final private boolean isMine;
 	final private int row;
 	final private int col;
-	private boolean isRevealed;
-	private int adjacentMines; // -1 if isMine is true
-	private boolean isFlagged;
+	final private boolean mine;
+	private boolean flagged;
+	private boolean revealed;
+	private int adjMines; // -1 if mine is true
 	protected GameManager manager;
 //	protected boolean chordOn;
 //this can be for later, depending if I want chord mode or not
 	
-	public Cell(int row, int col, boolean isMine, int adjacentMines, GameManager manager) {
-		this.adjacentMines = adjacentMines;
-		this.isMine = isMine;
+	public Cell(int row, int col, boolean mine, int adjMines, GameManager manager) {
+		this.adjMines = adjMines;
+		this.mine = mine;
 		this.row = row;
 		this.col = col;
 		this.manager = manager;
-		isRevealed = false; //all cells start blank
-		isFlagged = false;
+		revealed = false; //all cells start blank
+		flagged = false;
 		configureButton();
 		addActions();
 //		chordOn = manager.isChordOn();
@@ -34,7 +34,7 @@ public class Cell extends JButton {
 	}
 	
 	private void configureButton() {
-		this.setBounds(new Rectangle(22,22));
+		this.setBounds(new Rectangle(24,24));
 	    setBorderPainted(false);
 	    setFocusable(false);
 	    setContentAreaFilled(false);
@@ -42,7 +42,7 @@ public class Cell extends JButton {
 	}
 
 	private boolean canChord() {
-		if(isRevealed && !isMine && adjacentMines == manager.adjacentCellsFlagged(row,col)) {//not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
+		if(revealed && !mine && adjMines == manager.adjacentCellsFlagged(row,col)) {//not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
 			return true;
 		}
 	
@@ -50,7 +50,7 @@ public class Cell extends JButton {
 	}
 	
 	private boolean canReveal() {
-		if(isRevealed == false && isFlagged == false) {//must be unrevealed, unflagged
+		if(!revealed && !flagged) {//must be unrevealed, unflagged
 			return true;
 		}
 		
@@ -63,17 +63,15 @@ public class Cell extends JButton {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals tile, chording
-					if(canReveal()) {
-						reveal();
-					}
+				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals cell, chording
+					reveal1();
 					
 					if(canChord()) {
 						chord();
 					}
 					
 				} else if (SwingUtilities.isRightMouseButton(e)) {// right click --> places/removes flags
-					if(!isRevealed) {
+					if(!revealed) {
 						flag();
 					}
 				}
@@ -89,92 +87,101 @@ public class Cell extends JButton {
 		manager.chord(this);
 	}
 	
-	/**
-	 * initiates the revealing process of cells
-	*/
-	public void floodFill() {
-		manager.floodFill(this);
+	protected void floodFillReveal() {
+		manager.floodFillReveal(this);
 	}
-
-	//flagging the given tile
+	
+	/**
+	 * plainly reveals the cell
+	 * 
+	 * @see #reveal1()
+	 */	
+	public void reveal() {
+		if(!revealed && !flagged) {
+			setCellIcon();
+			manager.addRevealedCell();
+		}
+	}
+	
+	/**
+	 * reveals, floodfills if it can
+	 * 
+	 * @see #reveal()
+	 */
+	public void reveal1() {
+		if(!revealed && !flagged) {
+			if(adjMines == 0) {
+				floodFillReveal();
+				return;
+			}
+			setCellIcon();
+			manager.addRevealedCell();
+		}
+	}
+	
+	private void setCellIcon() {
+		if(!mine) {
+			//sets the icon based on the num of adjacent mines
+			switch(adjMines) {
+			case 0 -> setIcon(IconRegistry.getScaled("EMPTY","CELL"));
+			case 1 -> setIcon(IconRegistry.getScaled("ONE","CELL"));
+	        case 2 -> setIcon(IconRegistry.getScaled("TWO","CELL"));
+	        case 3 -> setIcon(IconRegistry.getScaled("THREE","CELL"));
+	        case 4 -> setIcon(IconRegistry.getScaled("FOUR","CELL"));
+	        case 5 -> setIcon(IconRegistry.getScaled("FIVE","CELL"));
+	        case 6 -> setIcon(IconRegistry.getScaled("SIX","CELL"));
+	        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
+	        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
+	        default -> {
+	        	System.out.println("Switching on adjMines returned default for cell at row "+row+" and col "+col+".");
+	        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));		
+	        	}
+			}
+			return;
+		}
+		if(manager.getGameLost() == false) {//if this mine was the cause of the loss, primary color will be red
+			setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
+			manager.gameLost();
+		}else {
+			setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost, regular background
+		}
+	}
+	
+	//flag the given cell
 	public void flag() {
-		
-		//must be unrevealed to be flagged
-		if(!isRevealed ) {
-			if(!isFlagged) {//if it isnt already flagged, flag it
+		if(!revealed ) {
+			if(!flagged) {//if it isnt already flagged, flag it
 				setIcon(IconRegistry.getScaled("FLAG","CELL"));
-				isFlagged = true;
+				flagged = true;
 				manager.addFlag();
 			}
 			else {//if it is already flagged, unflag it
 				setIcon(IconRegistry.getScaled("UNREVEALED","CELL"));
-				isFlagged = false;
+				flagged = false;
 				manager.removeFlag();
 			}
 		}
 	}
 
-	/**
-	 * Reveals the cell
-	 */	
-	public void reveal() {
-		if(!isRevealed) {
-			isRevealed = true;
-			if(!isMine) {
-				//sets the icon based on the num of adjacent mines
-				switch(adjacentMines) {
-				case 0 -> setIcon(IconRegistry.getScaled("EMPTY","CELL"));
-				case 1 -> setIcon(IconRegistry.getScaled("ONE","CELL"));
-		        case 2 -> setIcon(IconRegistry.getScaled("TWO","CELL"));
-		        case 3 -> setIcon(IconRegistry.getScaled("THREE","CELL"));
-		        case 4 -> setIcon(IconRegistry.getScaled("FOUR","CELL"));
-		        case 5 -> setIcon(IconRegistry.getScaled("FIVE","CELL"));
-		        case 6 -> setIcon(IconRegistry.getScaled("SIX","CELL"));
-		        case 7 -> setIcon(IconRegistry.getScaled("SEVEN","CELL"));
-		        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
-		        default -> {
-		        	System.out.println("Switching on adjMines returned default for cell at row "+row+" and col "+col+".");
-		        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));		
-		        	}
-				}
-				manager.addRevealedCell();
-				return;
-			}
-			if(manager.getGameLost() == false) {//if this mine was the cause of the loss, color it red
-				setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
-				manager.gameLost();
-			}else {
-				setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost and this isnt the cause. give this mine a blank background
-			}
-			reveal1();
-		}
-	}
+	/*
+	 * getters and setters
+	 */
 	
-	/**
-	 * calls floodfill
-	 */	
-	private void reveal1() {
-		if(canReveal()) {
-			floodFill();
-		}
-	}
-	
-// getters and setters
 	public boolean isRevealed() {
-		return isRevealed;
+		return revealed;
 	}
-//getter
+
 	public boolean isFlagged() {
-		return isFlagged;
+		return flagged;
 	}
-//getter
+
 	public boolean isMine() {
-		return isMine;
+		return mine;
 	}
 	
-	// -1 if isMine == true;
+	// -1 if mine == true;
 	public int getAdjacentMines() {
-		return adjacentMines;
+		return adjMines;
 	}
 
 	public int getRow() {
@@ -196,7 +203,7 @@ public class Cell extends JButton {
 	
 	@Override
 	public String toString() {
-		return "Column: " + col + ", row: " + row + ", is a mine: " + isMine + ", is revealed: " + isRevealed
-				+ ", number of adjacent mines: " + adjacentMines + "." + ", current Icon: " + this.getIcon();
+		return "Column: " + col + ", row: " + row + ", is a mine: " + mine + ", is revealed: " + revealed + 
+				", is flagged: " + flagged + ", number of adjacent mines: " + adjMines + "." + "Current Icon: " + this.getIcon();
 	}
 }

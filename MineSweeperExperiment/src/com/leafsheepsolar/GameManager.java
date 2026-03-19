@@ -13,13 +13,13 @@ public class GameManager {
 
     private final int rows;
     private final int cols;
-    private Cell[][] grid;
-    private int[][] intGrid;//simplifying the randomizing
     private final int mines; 
-    private boolean startTimer;
-    private boolean gameLost; 
-    private int numRevealedCells;
+    private Cell[][] grid;
+    private int[][] intGrid;//simplified grid
     private JavaUI parent;
+    private boolean gameLost;
+    private int numRevealedCells;
+    private boolean startTimer;
 
     
 	/** <p> Manages making the cell board and the methods associated with it. */
@@ -145,26 +145,21 @@ public class GameManager {
     }
     
 	/**
-	 * floodfills the given cell (assumes revealed==false)
+	 * reveals the given cell, recursively reveals surrounding cells
 	*/
-    public void floodFill(Cell cell) {
-    	if(cell.isRevealed()) {
-    		System.out.println();
-    		System.out.println("This cell is already revealed");
-    		System.out.println();
-    		return;
-    	}//delete when done
+    public void floodFillReveal(Cell cell) {
+    	if(!(cell.isRevealed()))
     	cell.reveal();
-        int row = cell.getRow();
-        int col = cell.getCol();
         
-       if(cell.getAdjacentMines() == 0 ) {//dont expand from numbered cells
-    	   
+       if(cell.getAdjacentMines() == 0) {//dont expand from numbered cells
+    	   int row = cell.getRow();
+           int col = cell.getCol();
+           
     	   for (int r = row - 1; r <= row + 1; r++) {
             for (int c = col - 1; c <= col + 1; c++) {
                 // Bounds check 
                 if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].isRevealed())/*dont reveal a cell thats already revealed*/) {
-                	floodFill(grid[r][c]);
+                	floodFillReveal(grid[r][c]);
                 }
             }
         }
@@ -180,7 +175,7 @@ public class GameManager {
         int row = cell.getRow();
         int col = cell.getCol();
         
-        cell.reveal();
+        cell.reveal1();
         
         //reveal adjacent cells
         for (int r = row - 1; r <= row + 1; r++) {
@@ -201,7 +196,7 @@ public class GameManager {
     	for(int r = 0; r<rows; r++) {
     		for(int c = 0; c<cols; c++) {
     			if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) { 
-    				grid[r][c].reveal();//if a mine is not flagged then reveal the tile. If it is flagged and is a mine dont reveal
+    				grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
     				grid[r][c].setEnabled(false);
     			}
     		}

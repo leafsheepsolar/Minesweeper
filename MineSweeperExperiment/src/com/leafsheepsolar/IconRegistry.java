@@ -18,7 +18,7 @@ public final class IconRegistry {
     
     static {
     	//Icon type size
-	    ICON_SIZES.put("CELL", new Rectangle(22,22));
+	    ICON_SIZES.put("CELL", new Rectangle(24,24));
 	    ICON_SIZES.put("TIMER", new Rectangle(60,45));
 	    ICON_SIZES.put("GAME_INDICATOR", new Rectangle(45,45));
 	    
@@ -34,7 +34,7 @@ public final class IconRegistry {
     private static final Map<String, String> ICON_FILES = new HashMap<>();
 
     static {
-        // Cell number icons
+        // Cell icons
         ICON_FILES.put("ONE", "1Icon.png");
         ICON_FILES.put("TWO", "2Icon.png");
         ICON_FILES.put("THREE", "3Icon.png");
@@ -43,23 +43,19 @@ public final class IconRegistry {
         ICON_FILES.put("SIX", "6Icon.png");
         ICON_FILES.put("SEVEN", "7Icon.png");
         ICON_FILES.put("EIGHT", "8Icon.png");
+        ICON_FILES.put("REVEALED_MINE", "revealedMineIcon.png");
 
         // Cell state icons
         ICON_FILES.put("UNREVEALED", "unrevealedIcon.png");
         ICON_FILES.put("FLAG", "flagIcon.png");
+        ICON_FILES.put("INCORRECT_FLAG", "incorrectFlag.png");
         ICON_FILES.put("CLICKED_MINE", "clickedMineIcon.png");
-        ICON_FILES.put("REVEALED_MINE", "revealedMineIcon.png");
         ICON_FILES.put("EMPTY", "emptyIcon.png");
 
         // Game indicator icons
         ICON_FILES.put("GAME_LOST", "gameLostIcon.png");
         ICON_FILES.put("GAME_WON", "gameWonIcon.png");
         ICON_FILES.put("NEUTRAL", "neutralIcon.png");
-
-        /*
-         * To add a new icon:
-         * ICON_FILES.put("KEY", "fileName.png");
-         */
     }
 	
     //map registry 

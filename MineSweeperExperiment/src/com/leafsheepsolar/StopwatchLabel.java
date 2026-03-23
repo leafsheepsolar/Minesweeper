@@ -55,10 +55,11 @@ public class StopwatchLabel extends JLabel {
 	    }
 	    catch (FontFormatException | IOException e){
 	    	e.printStackTrace();
-	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
+	    	configureFont = new Font("Arial", Font.PLAIN, 28);
 	    }
-	    setFont(configureFont);
+		
 		setHorizontalAlignment(SwingConstants.TRAILING);
+		setFont(configureFont);
 		setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		setBackground(new Color(128,128,128));
 	}

@@ -16,10 +16,11 @@ public class GameManager {
     private final int mines; 
     private Cell[][] grid;
     private int[][] intGrid;//simplified grid
-    private JavaUI parent;
-    private boolean gameLost;
-    private int numRevealedCells;
     private boolean startTimer;
+    private boolean gameLost; 
+    private int numCorrectFlags;
+    private int numRevealedCells;
+    private JavaUI parent;
 
     
 	/** <p> Manages making the cell board and the methods associated with it. */
@@ -165,15 +166,38 @@ public class GameManager {
 	        }
 	       }
     	}
-    	
+    	}
+    /*
+	 * floodfills the given cell (assumes unrevealed)
+	*/
+    public void floodFill(Cell cell) {
+    	if(!(cell.isRevealed())) {
+    		System.out.println("This cell is already revealed");
+    		return;
+    	}
+        int row = cell.getRow();
+        int col = cell.getCol();
+        cell.reveal();
+        
+       if(cell.getAdjacentMines() == 0 ) {
+    	   
+    	   for (int r = row - 1; r <= row + 1; r++) {
+            for (int c = col - 1; c <= col + 1; c++) {
+                // Bounds check 
+                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].isRevealed())/*dont reveal a cell thats already revealed*/) {
+                	floodFill(grid[r][c]);
+                }
+            }
+        }
+    	   
+       }
     }
     
 	/**
-	 * <p>Reveals all adjacent cells<p>
-	 * 
-	 * Assumes adjCellsFlagged == adjMines && cell.revealed == false
+	 * chords the given cell
 	*/
     public void chord(Cell cell) {
+
     	if(cell.canChord()) {
     		int row = cell.getRow();
     		int col = cell.getCol();
@@ -183,11 +207,36 @@ public class GameManager {
 	            for (int c = col - 1; c <= col + 1; c++) {
 	                // Bounds check 
 	                if (r >= 0 && r < rows && c >= 0 && c < cols /*in-bounds*/&& !(grid[r][c].isFlagged())) {
-	                	grid[r][c].reveal1(true);
+	                	grid[r][c].floodReveal();
 	                }
 	            }
 	        }
     	}
+
+        int row = cell.getRow();
+        int col = cell.getCol();
+
+        //stop condition
+        if (cell.isMine()) {
+            return;
+        }
+
+        cell.reveal();
+
+        //reveal numbered cells, but dont expand
+        if (cell.getAdjacentMines() != 0) {
+            return;
+        }
+        
+        //reveal adjacent cells
+        for (int r = row - 1; r <= row + 1; r++) {
+            for (int c = col - 1; c <= col + 1; c++) {
+                // Bounds check 
+                if (r >= 0 && r < rows && c >= 0 && c < cols) {
+                	chord(grid[r][c]);
+                }
+            }
+        }
     }
 
     //reveal incorrectly flagged mines
@@ -204,12 +253,6 @@ public class GameManager {
     		}
     	}
 	}
-    
-    public void ifGameWon() {
-    	if(numRevealedCells == rows*cols - mines && gameLost == false) {
-    		parent.gameWon();
-    	}
-    }
     
     //get the mine at the specified location in the grid
     public int getIntInGrid(int r, int c) {
@@ -235,7 +278,7 @@ public class GameManager {
     	parent.updateMineCounterText(Integer.toString(temp));//decrease the mineCounter by 1
     }
 	
-	/** revealedCells++ */
+	/** adds 1 to the number of revealed cells */
     public void addRevealedCell() {
     	numRevealedCells++;
     }
@@ -252,6 +295,10 @@ public class GameManager {
         return mines;
     }
 
+	public void setGameLost(boolean gameLost) {
+		this.gameLost = gameLost;
+	}
+	
 	public boolean getGameLost() {
 		return gameLost;
 	}

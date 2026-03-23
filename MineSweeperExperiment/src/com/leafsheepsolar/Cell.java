@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 public class Cell extends JButton {
-	static private int cellSize = 24; //in pizels
+	static protected int cellSize = 24; //in pizels
 	
 	final private int row;
 	final private int col;
@@ -33,23 +33,25 @@ public class Cell extends JButton {
 		
 	}
 	
-	private void configureButton() {
+	protected void configureButton() {
 		this.setBounds(new Rectangle(24,24));
 	    setBorderPainted(false);
 	    setFocusable(false);
 	    setContentAreaFilled(false);
 	    setIcon(IconRegistry.getScaled("UNREVEALED", "CELL"));
 	}
-
-	public boolean canChord() {
-		if(revealed && !mine && adjMines == manager.adjacentCellsFlagged(row,col)) {//not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
+	
+	
+	//must be blank, unflagged, and same num of adjMines as adjFlags
+	protected boolean canChord() {
+		if(revealed && !mine && adjMines == manager.adjacentCellsFlagged(row,col) || adjMines == 0) {
 			return true;
 		}
 	
 		return false;
 	}
 	
-	public boolean canReveal() {
+	protected boolean canReveal() {
 		if(!revealed && !flagged) {//must be unrevealed, unflagged
 			return true;
 		}
@@ -58,17 +60,15 @@ public class Cell extends JButton {
 	}
 
 	//adds actions for right & left clicks () 
-	private void addActions() {
+	protected void addActions() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
 				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals cell, chording
-					reveal1();
+					floodReveal();
 					
-					if(canChord()) {
-						chord();
-					}
+					chord();
 					
 				} else if (SwingUtilities.isRightMouseButton(e)) {// right click --> places/removes flags
 					if(!revealed) {
@@ -84,11 +84,13 @@ public class Cell extends JButton {
 	}
 
 	protected void chord() {
-		manager.chord(this);
+		if(canChord()) {
+			manager.chord(this);
+		}
 	}
 	
-	protected void floodFillReveal() {
-		manager.floodFillReveal(this);
+	public void floodFill() {
+		manager.floodFill(this);
 	}
 	
 	/**
@@ -108,10 +110,10 @@ public class Cell extends JButton {
 	 * 
 	 * @see #reveal()
 	 */
-	public void reveal1() {
+	public void floodReveal() {
 		if(!revealed && !flagged) {
 			if(adjMines == 0) {
-				floodFillReveal();
+				floodFill();
 				return;
 			}
 			setCellIcon();
@@ -119,7 +121,7 @@ public class Cell extends JButton {
 		}
 	}
 	
-	private void setCellIcon() {
+	protected void setCellIcon() {
 		if(!mine) {
 			//sets the icon based on the num of adjacent mines
 			switch(adjMines) {
@@ -163,10 +165,6 @@ public class Cell extends JButton {
 		}
 	}
 
-	/*
-	 * getters and setters
-	 */
-	
 	public boolean isRevealed() {
 		return revealed;
 	}

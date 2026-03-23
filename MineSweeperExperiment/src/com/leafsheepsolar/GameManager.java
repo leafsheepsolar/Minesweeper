@@ -148,22 +148,24 @@ public class GameManager {
 	 * reveals the given cell, recursively reveals surrounding cells
 	*/
     public void floodFillReveal(Cell cell) {
-    	if(!(cell.isRevealed()))
-    	cell.reveal();
-        
-       if(cell.getAdjacentMines() == 0) {//dont expand from numbered cells
-    	   int row = cell.getRow();
-           int col = cell.getCol();
-           
-    	   for (int r = row - 1; r <= row + 1; r++) {
-            for (int c = col - 1; c <= col + 1; c++) {
-                // Bounds check 
-                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].isRevealed())/*dont reveal a cell thats already revealed*/) {
-                	floodFillReveal(grid[r][c]);
-                }
-            }
-        }
-       }
+    	if(cell.canReveal()) {
+	    	cell.reveal();
+	        
+	       if(cell.getAdjacentMines() == 0) {//dont expand from numbered cells
+	    	   int row = cell.getRow();
+	           int col = cell.getCol();
+	           
+	    	   for (int r = row - 1; r <= row + 1; r++) {
+	            for (int c = col - 1; c <= col + 1; c++) {
+	                // Bounds check 
+	                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())/*dont reveal a cell thats already revealed*/) {
+	                	floodFillReveal(grid[r][c]);
+	                }
+	            }
+	        }
+	       }
+    	}
+    	
     }
     
 	/**
@@ -172,20 +174,20 @@ public class GameManager {
 	 * Assumes adjCellsFlagged == adjMines && cell.revealed == false
 	*/
     public void chord(Cell cell) {
-        int row = cell.getRow();
-        int col = cell.getCol();
+    	if(cell.canChord()) {
+    		int row = cell.getRow();
+    		int col = cell.getCol();
         
-        cell.reveal1();
-        
-        //reveal adjacent cells
-        for (int r = row - 1; r <= row + 1; r++) {
-            for (int c = col - 1; c <= col + 1; c++) {
-                // Bounds check 
-                if (r >= 0 && r < rows && c >= 0 && c < cols /*in-bounds*/&& !(grid[r][c].isFlagged())) {
-                	grid[r][c].reveal();
-                }
-            }
-        }
+	        //reveal adjacent cells
+	        for (int r = row - 1; r <= row + 1; r++) {
+	            for (int c = col - 1; c <= col + 1; c++) {
+	                // Bounds check 
+	                if (r >= 0 && r < rows && c >= 0 && c < cols /*in-bounds*/&& !(grid[r][c].isFlagged())) {
+	                	grid[r][c].reveal1(true);
+	                }
+	            }
+	        }
+    	}
     }
 
     //reveal incorrectly flagged mines

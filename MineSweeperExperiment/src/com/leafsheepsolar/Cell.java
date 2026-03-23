@@ -41,7 +41,7 @@ public class Cell extends JButton {
 	    setIcon(IconRegistry.getScaled("UNREVEALED", "CELL"));
 	}
 
-	private boolean canChord() {
+	public boolean canChord() {
 		if(revealed && !mine && adjMines == manager.adjacentCellsFlagged(row,col)) {//not blank? -> cannot be a mine, unrevealed, or have a different number of adjacent cells flagged than adjacent mines
 			return true;
 		}
@@ -49,7 +49,7 @@ public class Cell extends JButton {
 		return false;
 	}
 	
-	private boolean canReveal() {
+	public boolean canReveal() {
 		if(!revealed && !flagged) {//must be unrevealed, unflagged
 			return true;
 		}

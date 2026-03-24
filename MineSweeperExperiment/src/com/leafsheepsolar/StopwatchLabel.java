@@ -47,15 +47,14 @@ public class StopwatchLabel extends JLabel {
 
     //configures gui elements 
 	private void configure() {
-		
-		Font configureFont;
+		Font configureFont;//set the font
 	    try {
 	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
 	    	configureFont = configureFont.deriveFont(Font.BOLD,28f);
 	    }
 	    catch (FontFormatException | IOException e){
 	    	e.printStackTrace();
-	    	configureFont = new Font("Arial", Font.PLAIN, 28);
+	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
 	    }
 		
 		setHorizontalAlignment(SwingConstants.TRAILING);

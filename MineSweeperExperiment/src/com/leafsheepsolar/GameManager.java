@@ -18,7 +18,6 @@ public class GameManager {
     private int[][] intGrid;//simplified grid
     private boolean startTimer;
     private boolean gameLost; 
-    private int numCorrectFlags;
     private int numRevealedCells;
     private JavaUI parent;
 
@@ -148,7 +147,7 @@ public class GameManager {
 	/**
 	 * reveals the given cell, recursively reveals surrounding cells
 	*/
-    public void floodFillReveal(Cell cell) {
+    public void floodFill(Cell cell) {
     	if(cell.canReveal()) {
 	    	cell.reveal();
 	        
@@ -160,38 +159,13 @@ public class GameManager {
 	            for (int c = col - 1; c <= col + 1; c++) {
 	                // Bounds check 
 	                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())/*dont reveal a cell thats already revealed*/) {
-	                	floodFillReveal(grid[r][c]);
+	                	floodFill(grid[r][c]);
 	                }
 	            }
 	        }
 	       }
     	}
     	}
-    /*
-	 * floodfills the given cell (assumes unrevealed)
-	*/
-    public void floodFill(Cell cell) {
-    	if(!(cell.isRevealed())) {
-    		System.out.println("This cell is already revealed");
-    		return;
-    	}
-        int row = cell.getRow();
-        int col = cell.getCol();
-        cell.reveal();
-        
-       if(cell.getAdjacentMines() == 0 ) {
-    	   
-    	   for (int r = row - 1; r <= row + 1; r++) {
-            for (int c = col - 1; c <= col + 1; c++) {
-                // Bounds check 
-                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].isRevealed())/*dont reveal a cell thats already revealed*/) {
-                	floodFill(grid[r][c]);
-                }
-            }
-        }
-    	   
-       }
-    }
     
 	/**
 	 * chords the given cell
@@ -212,31 +186,6 @@ public class GameManager {
 	            }
 	        }
     	}
-
-        int row = cell.getRow();
-        int col = cell.getCol();
-
-        //stop condition
-        if (cell.isMine()) {
-            return;
-        }
-
-        cell.reveal();
-
-        //reveal numbered cells, but dont expand
-        if (cell.getAdjacentMines() != 0) {
-            return;
-        }
-        
-        //reveal adjacent cells
-        for (int r = row - 1; r <= row + 1; r++) {
-            for (int c = col - 1; c <= col + 1; c++) {
-                // Bounds check 
-                if (r >= 0 && r < rows && c >= 0 && c < cols) {
-                	chord(grid[r][c]);
-                }
-            }
-        }
     }
 
     //reveal incorrectly flagged mines

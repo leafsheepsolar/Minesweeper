@@ -51,7 +51,7 @@ public class Cell extends JButton {
 		return false;
 	}
 	
-	protected boolean canReveal() {
+	public boolean canReveal() {
 		if(!revealed && !flagged) {//must be unrevealed, unflagged
 			return true;
 		}
@@ -78,8 +78,7 @@ public class Cell extends JButton {
 			if(manager.getStartTimer()) {//if the timer is ready to be started, start
 				manager.startTimerWorkaround();
 			}
-			;}
-			
+			}
 		});
 	}
 
@@ -95,11 +94,10 @@ public class Cell extends JButton {
 	
 	/**
 	 * plainly reveals the cell
-	 * 
-	 * @see #reveal1()
+	 * @see #floodReveal
 	 */	
 	public void reveal() {
-		if(!revealed && !flagged) {
+		if(canReveal()) {
 			setCellIcon();
 			manager.addRevealedCell();
 		}
@@ -111,13 +109,12 @@ public class Cell extends JButton {
 	 * @see #reveal()
 	 */
 	public void floodReveal() {
-		if(!revealed && !flagged) {
+		if(canReveal()) {
 			if(adjMines == 0) {
 				floodFill();
 				return;
 			}
-			setCellIcon();
-			manager.addRevealedCell();
+			reveal();
 		}
 	}
 	

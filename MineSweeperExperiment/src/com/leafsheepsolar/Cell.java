@@ -71,9 +71,7 @@ public class Cell extends JButton {
 					chord();
 					
 				} else if (SwingUtilities.isRightMouseButton(e)) {// right click --> places/removes flags
-					if(!revealed) {
-						flag();
-					}
+					flag();
 				}
 			if(manager.getStartTimer()) {//if the timer is ready to be started, start
 				manager.startTimerWorkaround();
@@ -89,7 +87,7 @@ public class Cell extends JButton {
 	}
 	
 	public void floodFill() {
-		manager.floodFill(this);
+		manager.floodFill(row,col);
 	}
 	
 	/**
@@ -99,6 +97,7 @@ public class Cell extends JButton {
 	public void reveal() {
 		if(canReveal()) {
 			setCellIcon();
+			revealed = true;
 			manager.addRevealedCell();
 		}
 	}
@@ -148,7 +147,7 @@ public class Cell extends JButton {
 	
 	//flag the given cell
 	public void flag() {
-		if(!revealed ) {
+		if(!revealed) {
 			if(!flagged) {//if it isnt already flagged, flag it
 				setIcon(IconRegistry.getScaled("FLAG","CELL"));
 				flagged = true;

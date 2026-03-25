@@ -147,25 +147,22 @@ public class GameManager {
 	/**
 	 * reveals the given cell, recursively reveals surrounding cells
 	*/
-    public void floodFill(Cell cell) {
-    	if(cell.canReveal()) {
-	    	cell.reveal();
+    public void floodFill(int row, int col) {
+    	
+	    grid[row][col].reveal();
 	        
-	       if(cell.getAdjacentMines() == 0) {//dont expand from numbered cells
-	    	   int row = cell.getRow();
-	           int col = cell.getCol();
-	           
-	    	   for (int r = row - 1; r <= row + 1; r++) {
-	            for (int c = col - 1; c <= col + 1; c++) {
-	                // Bounds check 
-	                if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())/*dont reveal a cell thats already revealed*/) {
-	                	floodFill(grid[r][c]);
-	                }
-	            }
-	        }
-	       }
-    	}
-    	}
+	   if(grid[row][col].getAdjacentMines() == 0) {//dont expand from numbered cells
+	   
+		   for (int r = row - 1; r <= row + 1; r++) {
+			   for (int c = col - 1; c <= col + 1; c++) {
+			    // Bounds check 
+					if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())) {
+				    	floodFill(r,c);
+				    }
+				}
+		   }
+	   }
+    }
     
 	/**
 	 * chords the given cell

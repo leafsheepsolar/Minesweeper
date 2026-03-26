@@ -44,7 +44,7 @@ public class Cell extends JButton {
 	
 	//must be blank, unflagged, and same num of adjMines as adjFlags
 	protected boolean canChord() {
-		if(revealed && !mine && adjMines == manager.adjacentCellsFlagged(row,col) || adjMines == 0) {
+		if(revealed && !mine && adjMines == manager.adjacentCellsFlagged(row,col)) {
 			return true;
 		}
 	
@@ -66,10 +66,9 @@ public class Cell extends JButton {
 			public void mouseClicked(MouseEvent e) {
 				
 				if(SwingUtilities.isLeftMouseButton(e)) {// left click --> reveals cell, chording
-					floodReveal();
-					
 					chord();
-					
+					floodReveal();
+
 				} else if (SwingUtilities.isRightMouseButton(e)) {// right click --> places/removes flags
 					flag();
 				}
@@ -87,7 +86,8 @@ public class Cell extends JButton {
 	}
 	
 	public void floodFill() {
-		manager.floodFill(row,col);
+		manager.floodFill(this);
+//		manager.floodFill(row,col);
 	}
 	
 	/**

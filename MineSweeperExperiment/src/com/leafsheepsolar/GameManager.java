@@ -144,25 +144,51 @@ public class GameManager {
         return flagCount;
     }
     
+    /**
+	 * floodfills the given cell (assumes revealed==false)
+	*/
+    public void floodFill(Cell cell) {
+    	if(!(cell.canReveal())) {
+    		return;
+    	}
+    	cell.reveal();
+        int row = cell.getRow();
+        int col = cell.getCol();
+
+        
+       if(cell.getAdjacentMines() == 0 ) {//dont expand from numbered cells
+    	   
+    	   for (int r = row - 1; r <= row + 1; r++) {
+            for (int c = col - 1; c <= col + 1; c++) {
+            	if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())) {
+            		floodFill(grid[r][c]);
+            	}
+            }
+        }
+
+       }
+    }
+    
 	/**
 	 * reveals the given cell, recursively reveals surrounding cells
 	*/
-    public void floodFill(int row, int col) {
-    	
-	    grid[row][col].reveal();
-	        
-	   if(grid[row][col].getAdjacentMines() == 0) {//dont expand from numbered cells
-	   
-		   for (int r = row - 1; r <= row + 1; r++) {
-			   for (int c = col - 1; c <= col + 1; c++) {
-			    // Bounds check 
+	public void floodFill(int row, int col) {
+		if(!(grid[row][col].canReveal())) {
+			return;
+		}
+		grid[row][col].reveal();
+		
+		if(grid[row][col].getAdjacentMines() == 0) {//dont expand from numbered cells
+			
+			for (int r = row - 1; r <= row + 1; r++) {
+				for (int c = col - 1; c <= col + 1; c++) {
 					if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())) {
-				    	floodFill(r,c);
-				    }
+						floodFill(r,c);
+					}
 				}
-		   }
-	   }
-    }
+			}
+		}
+	}
     
 	/**
 	 * chords the given cell
@@ -178,7 +204,8 @@ public class GameManager {
 	            for (int c = col - 1; c <= col + 1; c++) {
 	                // Bounds check 
 	                if (r >= 0 && r < rows && c >= 0 && c < cols /*in-bounds*/&& !(grid[r][c].isFlagged())) {
-	                	grid[r][c].floodReveal();
+//	                	floodFill(r,c);
+	                	floodFill(grid[r][c]);
 	                }
 	            }
 	        }

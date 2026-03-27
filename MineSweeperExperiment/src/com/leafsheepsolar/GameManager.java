@@ -144,45 +144,17 @@ public class GameManager {
         return flagCount;
     }
     
-    /**
+	/**
 	 * floodfills the given cell (assumes revealed==false)
 	*/
-    public void floodFill(Cell cell) {
-    	if(!(cell.canReveal())) {
-    		return;
-    	}
-    	cell.reveal();
-        int row = cell.getRow();
-        int col = cell.getCol();
-
-        
-       if(cell.getAdjacentMines() == 0 ) {//dont expand from numbered cells
-    	   
-    	   for (int r = row - 1; r <= row + 1; r++) {
-            for (int c = col - 1; c <= col + 1; c++) {
-            	if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())) {
-            		floodFill(grid[r][c]);
-            	}
-            }
-        }
-
-       }
-    }
-    
-	/**
-	 * reveals the given cell, recursively reveals surrounding cells
-	*/
 	public void floodFill(int row, int col) {
-		if(!(grid[row][col].canReveal())) {
-			return;
-		}
 		grid[row][col].reveal();
 		
-		if(grid[row][col].getAdjacentMines() == 0) {//dont expand from numbered cells
+		if(grid[row][col].getAdjacentMines() == 0 ) {//dont expand from numbered cells
 			
 			for (int r = row - 1; r <= row + 1; r++) {
 				for (int c = col - 1; c <= col + 1; c++) {
-					if (r >= 0 && r < rows && c >= 0 && c < cols && !(grid[r][c].canReveal())) {
+					if (r >= 0 && r < rows && c >= 0 && c < cols && grid[r][c].canReveal()) {
 						floodFill(r,c);
 					}
 				}
@@ -194,7 +166,6 @@ public class GameManager {
 	 * chords the given cell
 	*/
     public void chord(Cell cell) {
-
     	if(cell.canChord()) {
     		int row = cell.getRow();
     		int col = cell.getCol();
@@ -204,8 +175,7 @@ public class GameManager {
 	            for (int c = col - 1; c <= col + 1; c++) {
 	                // Bounds check 
 	                if (r >= 0 && r < rows && c >= 0 && c < cols /*in-bounds*/&& !(grid[r][c].isFlagged())) {
-//	                	floodFill(r,c);
-	                	floodFill(grid[r][c]);
+	                	floodFill(r,c);
 	                }
 	            }
 	        }
@@ -219,9 +189,9 @@ public class GameManager {
     	
     	for(int r = 0; r<rows; r++) {
     		for(int c = 0; c<cols; c++) {
+    			grid[r][c].setEnabled(false);
     			if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) { 
     				grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
-    				grid[r][c].setEnabled(false);
     			}
     		}
     	}

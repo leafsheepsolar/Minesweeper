@@ -86,8 +86,7 @@ public class Cell extends JButton {
 	}
 	
 	public void floodFill() {
-		manager.floodFill(this);
-//		manager.floodFill(row,col);
+		manager.floodFill(row,col);
 	}
 	
 	/**
@@ -141,7 +140,7 @@ public class Cell extends JButton {
 			setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
 			manager.gameLost();
 		}else {
-			setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//if it was not the first mine revealed, then the game has already been lost, regular background
+			setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//otherwise regular background
 		}
 	}
 	

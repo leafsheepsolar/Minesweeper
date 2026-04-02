@@ -186,13 +186,22 @@ public class GameManager {
     public void gameLost() {
     	gameLost = true;//game has been lost, so set to true
     	parent.gameLost();
+
+    	System.out.println(grid[4][4].removeActionListener(grid[4][4].getActionListeners()[0]));
+    	
     	
     	for(int r = 0; r<rows; r++) {
     		for(int c = 0; c<cols; c++) {
-    			grid[r][c].setEnabled(false);
-    			if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) { 
-    				grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
+    			grid[r][c].removeActionListener(grid[r][c].getActionListeners()[0]);//remove actionlisteners to disable
+    			if(grid[r][c].isMine()) {
+    				if(!(grid[r][c].isFlagged())) {
+    					grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
+    				}
+    				else {
+    					
+    				}
     			}
+    			
     		}
     	}
 	}

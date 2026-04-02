@@ -59,7 +59,7 @@ public class Cell extends JButton {
 		return false;
 	}
 
-	//adds actions for right & left clicks () 
+	//adds actions for right & left clicks ()
 	protected void addActions() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
@@ -95,8 +95,8 @@ public class Cell extends JButton {
 	 */	
 	public void reveal() {
 		if(canReveal()) {
-			setCellIcon();
 			revealed = true;
+			setCellIcon();
 			manager.addRevealedCell();
 		}
 	}
@@ -142,6 +142,7 @@ public class Cell extends JButton {
 		}else {
 			setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//otherwise regular background
 		}
+		if(is)
 	}
 	
 	//flag the given cell

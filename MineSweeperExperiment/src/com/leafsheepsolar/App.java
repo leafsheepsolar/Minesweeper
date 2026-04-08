@@ -5,13 +5,3 @@ public class App {
 		new JavaUI();
 	}
 }
-
-
-
-
-
-/*
-When I click on the 
-
-
-*/

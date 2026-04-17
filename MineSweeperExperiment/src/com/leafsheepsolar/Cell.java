@@ -90,7 +90,7 @@ public class Cell extends JButton {
 	}
 	
 	/**
-	 * plainly reveals the cell
+	 * plainly reveals only the given cell
 	 * @see #floodReveal
 	 */	
 	public void reveal() {
@@ -102,7 +102,7 @@ public class Cell extends JButton {
 	}
 	
 	/**
-	 * reveals, floodfills if it can
+	 * reveals the given cell, and floodfills if possible
 	 * 
 	 * @see #reveal()
 	 */
@@ -139,10 +139,12 @@ public class Cell extends JButton {
 		if(manager.getGameLost() == false) {//if this mine was the cause of the loss, primary color will be red
 			setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
 			manager.gameLost();
+			return;
 		}else {
 			setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//otherwise regular background
+			return;
 		}
-		if(is)
+		if()
 	}
 	
 	//flag the given cell

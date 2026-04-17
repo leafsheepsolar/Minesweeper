@@ -18,7 +18,7 @@ public class GameManager {
     private int[][] intGrid;//simplified grid
     private boolean startTimer;
     private boolean gameLost; 
-    private int numRevealedCells;
+    private int revealedCellCount;
     private JavaUI parent;
 
     
@@ -182,28 +182,35 @@ public class GameManager {
     	}
     }
 
-    //reveal incorrectly flagged mines
-    public void gameLost() {
-    	gameLost = true;//game has been lost, so set to true
-    	parent.gameLost();
-
-    	System.out.println(grid[4][4].removeActionListener(grid[4][4].getActionListeners()[0]));
-    	
-    	
+    public void gameWon() {
+    	parent.gameWon();
     	for(int r = 0; r<rows; r++) {
     		for(int c = 0; c<cols; c++) {
-    			grid[r][c].removeActionListener(grid[r][c].getActionListeners()[0]);//remove actionlisteners to disable
-    			if(grid[r][c].isMine()) {
-    				if(!(grid[r][c].isFlagged())) {
-    					grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
-    				}
-    				else {
-    					
-    				}
+    			grid[r][c].removeMouseListener(grid[r][c].getMouseListeners()[0]);//remove mouselisteners to disable
+    			if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) {
+    				grid[r][c].flag();
     			}
-    			
     		}
     	}
+    }
+    
+	//reveal incorrectly flagged mines
+	public void gameLost() {
+		gameLost = true;//game has been lost, so set to true
+		parent.gameLost();
+		
+		for(int r = 0; r<rows; r++) {
+			for(int c = 0; c<cols; c++) {
+				grid[r][c].removeMouseListener(grid[r][c].getMouseListeners()[0]);//remove mouselisteners to disable
+				
+				if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) {
+					grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
+				}
+				if(grid[r][c].isFlagged() && !(grid[r][c].isMine())){
+					grid[r][c].reveal();
+				}
+			}
+		}
 	}
     
     //get the mine at the specified location in the grid
@@ -232,7 +239,10 @@ public class GameManager {
 	
 	/** adds 1 to the number of revealed cells */
     public void addRevealedCell() {
-    	numRevealedCells++;
+    	revealedCellCount++;
+    	if(revealedCellCount == (rows*cols)-mines) {
+    		gameWon();
+    	}    
     }
     
     public int getRows() {

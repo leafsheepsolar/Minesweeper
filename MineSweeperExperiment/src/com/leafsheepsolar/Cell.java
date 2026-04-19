@@ -134,17 +134,19 @@ public class Cell extends JButton {
 	        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));		
 	        	}
 			}
+			if(manager.getGameLost() && flagged) {//the isMine is already in the previous one
+				setIcon(IconRegistry.getScaled("INCORRECT_FLAG", "CELL"));
+			}
 			return;
 		}
-		if(manager.getGameLost() == false) {//if this mine was the cause of the loss, primary color will be red
-			setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
-			manager.gameLost();
-			return;
-		}else {
-			setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//otherwise regular background
-			return;
+		if(mine) {
+			if(!(manager.getGameLost())) {//If this was the first mine to be clicked, paint it red
+				setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
+				manager.gameLost();
+			}else {
+				setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//otherwise regular background
+			}
 		}
-		if()
 	}
 	
 	//flag the given cell

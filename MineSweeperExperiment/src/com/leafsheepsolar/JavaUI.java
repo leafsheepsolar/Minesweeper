@@ -108,7 +108,6 @@ public class JavaUI extends JFrame {
 		    public void componentResized(ComponentEvent e) {
 				gameIndicator.setBounds(getWidth()/2 - 30, 5, 40, 40);
 				timer.setBounds(getWidth()-105, 5, 70, 40);
-		    	
 		    }
 		});
 		
@@ -116,7 +115,7 @@ public class JavaUI extends JFrame {
 		
 	}
 	
-	//this is to reset the game board
+	//reset the game board
 		private void resetBoard() {
 
 		    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
@@ -176,7 +175,7 @@ public class JavaUI extends JFrame {
 		    
 		}
 	
-		public void addBoard(JPanel cPanel) {
+	public void addBoard(JPanel cPanel) {
 		if(this.cPanel == null) {//if there isnt a cPanel, make a default one
 			addBoard1(cPanel);
 			return;

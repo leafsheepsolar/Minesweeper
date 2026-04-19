@@ -20,6 +20,7 @@ public class GameManager {
     private boolean gameLost; 
     private int revealedCellCount;
     private JavaUI parent;
+    private static int nonMineCells;
 
     
 	/** <p> Manages making the cell board and the methods associated with it. */
@@ -28,6 +29,7 @@ public class GameManager {
         this.mines = mines;
         this.rows = rows;
         this.cols = cols;
+        nonMineCells = (rows*cols)-mines;//only do the calc once
         gameLost = false;
         startTimer = true;
         grid = new Cell[rows][cols];
@@ -74,7 +76,7 @@ public class GameManager {
     	int placed = 0;
         Random rand = new Random();
         
-        while (placed <= mines) {
+        while (placed < mines) {
             int r = rand.nextInt(rows);
             int c = rand.nextInt(cols);
 
@@ -223,14 +225,14 @@ public class GameManager {
         return grid[r][c];
     }
     
-	/** decreases the flagcounter by one */
+	/** decreases the flag count by one */
     public void addFlag() {
     	int temp = Integer.parseInt(parent.getMineCounterText());
     	temp--;
     	parent.updateMineCounterText(Integer.toString(temp));//decrease the mineCounter by 1
     }
     
-    // Lowers the count of flags
+    /** increases the flag count by 1*/
     public void removeFlag() {
     	int temp = Integer.parseInt(parent.getMineCounterText());
     	temp++;
@@ -240,7 +242,7 @@ public class GameManager {
 	/** adds 1 to the number of revealed cells */
     public void addRevealedCell() {
     	revealedCellCount++;
-    	if(revealedCellCount == (rows*cols)-mines) {
+    	if(revealedCellCount == nonMineCells) {
     		gameWon();
     	}    
     }

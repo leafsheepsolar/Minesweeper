@@ -31,7 +31,7 @@ public class JavaUI extends JFrame {
 	private StopwatchLabel timer;
 	private JLabel mineCounter;
 	private GameManager manager;
-	final int defaultRows = 16, defaultCols = 30, defaultMines = 99; //this preset doesnt seem optimal either.
+	final int defaultRows = 16, defaultCols = 30, defaultMines = 99;
 	private int previousRows, previousCols, previousMines;
 	
 	/**
@@ -54,21 +54,23 @@ public class JavaUI extends JFrame {
 	 * Create the frame.
 	 */
 	public JavaUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//setting the frame  and contentpane
 		setBounds(100, 100, 500, 600);
 		setResizable(false);
 		contentPane = new JPanel(new BorderLayout());
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
+		//set northpanel
 		nPanel = new JPanel(null);
 		nPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		nPanel.setPreferredSize(new Dimension(0,51));//width is ignored, stretched in the NORTH section of border
+		nPanel.setPreferredSize(new Dimension(0,51));//width is automatically ignored
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
+		//set minecounter
 		mineCounter = new JLabel();
 		mineCounter.setHorizontalAlignment(SwingConstants.TRAILING);
-		Font configureFont;//set the font
+		Font configureFont;//set the custom font
 	    try {
 	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
 	    	configureFont = configureFont.deriveFont(Font.BOLD,28f);
@@ -82,7 +84,7 @@ public class JavaUI extends JFrame {
 		mineCounter.setBounds(10, 5, 75, 40);
 		nPanel.add(mineCounter);
 		
-		//setting up the timer
+		//set timer
 		timer = new StopwatchLabel();
 		timer.setBounds(383, 5, 75, 40);
 		nPanel.add(timer);
@@ -90,7 +92,7 @@ public class JavaUI extends JFrame {
 		timer.startTimer();
 		timer.pause();
 		
-		//set up the gameIndicator
+		//set gameIndicator
 		gameIndicator = new JButton();
 		gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
 		gameIndicator.addActionListener(new ActionListener(){
@@ -102,7 +104,7 @@ public class JavaUI extends JFrame {
 		nPanel.add(gameIndicator);
 
 		
-		//components in nPanel will be resized proportionally
+		//components in nPanel are resized proportionally
 		addComponentListener(new ComponentAdapter() {
 		    @Override
 		    public void componentResized(ComponentEvent e) {
@@ -111,69 +113,74 @@ public class JavaUI extends JFrame {
 		    }
 		});
 		
+		//give previousRows a default value
+		previousRows = defaultRows;
+		previousCols = defaultCols;
+		previousMines = defaultMines;
+		
 		manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
 		
 	}
 	
 	//reset the game board
-		private void resetBoard() {
+	private void resetBoard() {
 
-		    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
-		    timer.reset();
+	    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
+	    timer.reset();
 
-		    // Step 1: Ask if user wants custom values
-		    int customChoice = JOptionPane.showConfirmDialog(
-		        gameIndicator,
-		        "Use custom board values?",
-		        "Game Setup",
-		        JOptionPane.YES_NO_OPTION
-		    );
+	    // Step 1: Ask if user wants custom values
+	    int customChoice = JOptionPane.showConfirmDialog(
+	        gameIndicator,
+	        "Use custom board values?",
+	        "Game Setup",
+	        JOptionPane.YES_NO_OPTION
+	    );
 
-		    // yes -> go to custom options
-		    if (customChoice == JOptionPane.YES_OPTION) {
+	    // yes -> go to custom options
+	    if (customChoice == JOptionPane.YES_OPTION) {
 
-		        JTextField rowField = new JTextField();
-		        JTextField colField = new JTextField();
-		        JTextField mineField = new JTextField();
+	        JTextField rowField = new JTextField();
+	        JTextField colField = new JTextField();
+	        JTextField mineField = new JTextField();
 
-		        Object[] inputs = {
-		            "Rows:", rowField,
-		            "Columns:", colField,
-		            "Mines:", mineField
-		        };
+	        Object[] inputs = {
+	            "Rows:", rowField,
+	            "Columns:", colField,
+	            "Mines:", mineField
+	        };
 
-		        int inputResult = JOptionPane.showConfirmDialog(
-		            gameIndicator,
-		            inputs,
-		            "Enter Custom Values",
-		            JOptionPane.OK_CANCEL_OPTION
-		        );
+	        int inputResult = JOptionPane.showConfirmDialog(
+	            gameIndicator,
+	            inputs,
+	            "Enter Custom Values",
+	            JOptionPane.OK_CANCEL_OPTION
+	        );
 
-		        if (inputResult == JOptionPane.OK_OPTION) {
-		            int rows = Integer.parseInt(rowField.getText());
-		            int cols = Integer.parseInt(colField.getText());
-		            int mines = Integer.parseInt(mineField.getText());
-		            manager = new GameManager(rows, cols, mines, this);
-		        }
+	        if (inputResult == JOptionPane.OK_OPTION) {
+	            int rows = Integer.parseInt(rowField.getText());
+	            int cols = Integer.parseInt(colField.getText());
+	            int mines = Integer.parseInt(mineField.getText());
+	            manager = new GameManager(rows, cols, mines, this);
+	        }
 
-		        return;
-		    }
+	        return;
+	    }
 
-		    // not custom -> use presets or past choice?
-		    int reuseChoice = JOptionPane.showConfirmDialog(
-		        gameIndicator,
-		        "Use default values?\n(rows: 16, cols: 30, mines: 99)\n\nSelect NO to reuse previous values.",
-		        "Game Setup",
-		        JOptionPane.YES_NO_OPTION
-		    );
+	    // not custom -> use presets or past choice?
+	    int reuseChoice = JOptionPane.showConfirmDialog(
+	        gameIndicator,
+	        "Use default values?\n(rows: 16, cols: 30, mines: 99)\n\nSelect NO to reuse previous values.",
+	        "Game Setup",
+	        JOptionPane.YES_NO_OPTION
+	    );
 
-		    if (reuseChoice == JOptionPane.YES_OPTION) {
-		        manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
-		    } else {
-		        manager = new GameManager(previousRows, previousCols, previousMines, this);
-		    }
-		    
-		}
+	    if (reuseChoice == JOptionPane.YES_OPTION) {
+	        manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
+	    } else {
+	        manager = new GameManager(previousRows, previousCols, previousMines, this);
+	    }
+	    
+	}
 	
 	public void addBoard(JPanel cPanel) {
 		if(this.cPanel == null) {//if there isnt a cPanel, make a default one
@@ -186,7 +193,6 @@ public class JavaUI extends JFrame {
 	    setMinimumSize(getSize());
 	    this.cPanel = cPanel;
 	}
-	
 	
 	private void addBoard1(JPanel cPanel) {//makes a default cPanel
 		contentPane.add(cPanel, BorderLayout.CENTER);

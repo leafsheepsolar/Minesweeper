@@ -179,7 +179,6 @@ public class JavaUI extends JFrame {
 	    } else {
 	        manager = new GameManager(previousRows, previousCols, previousMines, this);
 	    }
-	    
 	}
 	
 	public void addBoard(JPanel cPanel) {

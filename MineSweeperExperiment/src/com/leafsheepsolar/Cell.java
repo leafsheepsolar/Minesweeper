@@ -116,6 +116,13 @@ public class Cell extends JButton {
 		}
 	}
 	
+	
+	/**
+	 * reveal used for active gameplay. Only reveals the first clicked mine(s).
+	 * 
+	 * @see #gameDoneReveal()
+	 */
+	
 	protected void setCellIcon() {
 		if(!mine) {
 			//sets the icon based on the num of adjacent mines
@@ -131,7 +138,7 @@ public class Cell extends JButton {
 	        case 8 -> setIcon(IconRegistry.getScaled("EIGHT","CELL"));
 	        default -> {
 	        	System.out.println("Switching on adjMines returned default for cell at row "+row+" and col "+col+".");
-	        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));		
+	        	setIcon(IconRegistry.getScaled("EIGHT","CELL"));
 	        	}
 			}
 			if(manager.getGameLost() && flagged) {//the isMine is already in the previous one
@@ -139,12 +146,32 @@ public class Cell extends JButton {
 			}
 			return;
 		}
-		if(mine) {
-			if(!(manager.getGameLost())) {//If this was the first mine to be clicked, paint it red
-				setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
-				manager.gameLost();
-			}else {
-				setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));//otherwise regular background
+		if(mine && !(manager.getGameLost())) {//If this was the first mine to be clicked, paint it red
+			setIcon(IconRegistry.getScaled("CLICKED_MINE","CELL"));
+			manager.gameLost();
+		}
+	}
+	
+	
+	/**
+	 * reveal for end of game methods
+	 * 
+	 * meant only for revealing mines and marking incorrect flags
+	 * 
+	 * @see #setCellIcon()
+	 */ 
+	protected void gameFinishedSetCellIcon() {
+		if(!revealed) {
+			if(manager.getGameLost()) {
+				if(mine && !revealed) {
+					revealed = true;
+					setIcon(IconRegistry.getScaled("REVEALED_MINE","CELL"));
+				}
+				if(flagged && !mine) {
+					setIcon(IconRegistry.getScaled("INCORRECT_FLAG", "CELL"));
+				}
+			}else if(!flagged && mine) {
+				flag();
 			}
 		}
 	}

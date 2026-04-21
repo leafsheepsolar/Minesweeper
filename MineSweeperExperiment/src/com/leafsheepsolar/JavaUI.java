@@ -162,7 +162,6 @@ public class JavaUI extends JFrame {
 	            int mines = Integer.parseInt(mineField.getText());
 	            manager = new GameManager(rows, cols, mines, this);
 	        }
-
 	        return;
 	    }
 

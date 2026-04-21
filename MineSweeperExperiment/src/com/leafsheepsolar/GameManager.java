@@ -125,8 +125,7 @@ public class GameManager {
         return mineCount;
     }
 
-    //TODO: does it work?
-    // Create all Cell objects once, if the cell is a bomb, adjacentMines = -1.
+    // Create all Cell objects once, if the cell is a bomb, adjacentMines = -1
     
     public int adjacentCellsFlagged(int row, int col) {
         int flagCount = 0;
@@ -206,10 +205,10 @@ public class GameManager {
 				grid[r][c].removeMouseListener(grid[r][c].getMouseListeners()[0]);//remove mouselisteners to disable
 				
 				if(grid[r][c].isMine() && !(grid[r][c].isFlagged())) {
-					grid[r][c].reveal();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
+					grid[r][c].gameFinishedSetCellIcon();//if a mine is not flagged then reveal the cell. If it is flagged and is a mine dont reveal
 				}
 				if(grid[r][c].isFlagged() && !(grid[r][c].isMine())){
-					grid[r][c].reveal();
+					grid[r][c].gameFinishedSetCellIcon();
 				}
 			}
 		}

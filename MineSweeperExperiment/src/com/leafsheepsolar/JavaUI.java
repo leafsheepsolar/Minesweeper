@@ -31,7 +31,8 @@ public class JavaUI extends JFrame {
 	private StopwatchLabel timer;
 	private JLabel mineCounter;
 	private GameManager manager;
-	final int defaultRows = 16, defaultCols = 30, defaultMines = 99;
+	final int defaultRows = 9, defaultCols = 9, defaultMines = 10;
+//	final int defaultRows = 16, defaultCols = 30, defaultMines = 99;
 	private int previousRows, previousCols, previousMines;
 	
 	/**
@@ -103,7 +104,6 @@ public class JavaUI extends JFrame {
 		gameIndicator.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40); //
 		nPanel.add(gameIndicator);
 
-		
 		//components in nPanel are resized proportionally
 		addComponentListener(new ComponentAdapter() {
 		    @Override
@@ -157,10 +157,21 @@ public class JavaUI extends JFrame {
 	        );
 
 	        if (inputResult == JOptionPane.OK_OPTION) {
+//	        	if(rowField.getText() == null || colField.getText() == null || mineField.getText() == null) {
+//	        		JOptionPane.showMessageDialog(mineField, "Please enter integers", "Error: fields are null", JOptionPane.WARNING_MESSAGE);
+//	        	}
 	            int rows = Integer.parseInt(rowField.getText());
 	            int cols = Integer.parseInt(colField.getText());
 	            int mines = Integer.parseInt(mineField.getText());
+//	            if(rows*cols < mines) {
+//	            	JOptionPane.showMessageDialog(
+//	            		mineField, "Mines need to be less than the total number of cells", "Error: mines greater than number of cells",
+//	            		JOptionPane.WARNING_MESSAGE);
+//	            	 int cancelOption = JOptionPane.CANCEL_OPTION;
+//	            }
+	            
 	            manager = new GameManager(rows, cols, mines, this);
+	            setPreviousSettings(rows,cols,mines);
 	        }
 	        return;
 	    }

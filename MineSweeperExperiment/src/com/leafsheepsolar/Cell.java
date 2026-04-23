@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 public class Cell extends JButton {
+
 	static protected int cellSize = 24; //in pizels
 	
 	final private int row;

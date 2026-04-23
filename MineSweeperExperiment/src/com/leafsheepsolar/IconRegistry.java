@@ -48,7 +48,7 @@ public final class IconRegistry {
         // Cell state icons
         ICON_FILES.put("UNREVEALED", "unrevealedIcon.png");
         ICON_FILES.put("FLAG", "flagIcon.png");
-        ICON_FILES.put("INCORRECT_FLAG", "incorrectFlag.png");
+        ICON_FILES.put("INCORRECT_FLAG", "incorrectFlagIcon.png");
         ICON_FILES.put("CLICKED_MINE", "clickedMineIcon.png");
         ICON_FILES.put("EMPTY", "emptyIcon.png");
 

@@ -122,14 +122,14 @@ public class JavaUI extends JFrame {
 		
 	}
 	
-	//reset the game board
+	//reset board/enter settings for next board
 	private void resetBoard() {
 
 	    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
 	    timer.reset();
 
-	    // Step 1: Ask if user wants custom values
-	    int customChoice = JOptionPane.showConfirmDialog(
+	    // ask if user wants custom values
+	    int inputSettings = JOptionPane.showConfirmDialog(
 	        gameIndicator,
 	        "Use custom board values?",
 	        "Game Setup",
@@ -137,7 +137,7 @@ public class JavaUI extends JFrame {
 	    );
 
 	    // yes -> go to custom options
-	    if (customChoice == JOptionPane.YES_OPTION) {
+	    if (inputSettings == JOptionPane.YES_OPTION) {
 
 	        JTextField rowField = new JTextField();
 	        JTextField colField = new JTextField();
@@ -157,18 +157,17 @@ public class JavaUI extends JFrame {
 	        );
 
 	        if (inputResult == JOptionPane.OK_OPTION) {
-//	        	if(rowField.getText() == null || colField.getText() == null || mineField.getText() == null) {
-//	        		JOptionPane.showMessageDialog(mineField, "Please enter integers", "Error: fields are null", JOptionPane.WARNING_MESSAGE);
-//	        	}
+	        	if(rowField.getText() == null || colField.getText() == null || mineField.getText() == null) {
+	        		JOptionPane.showMessageDialog(mineField, "Please enter integers", "Error: field(s) are null", JOptionPane.WARNING_MESSAGE);
+	        	}
 	            int rows = Integer.parseInt(rowField.getText());
 	            int cols = Integer.parseInt(colField.getText());
 	            int mines = Integer.parseInt(mineField.getText());
-//	            if(rows*cols < mines) {
-//	            	JOptionPane.showMessageDialog(
-//	            		mineField, "Mines need to be less than the total number of cells", "Error: mines greater than number of cells",
-//	            		JOptionPane.WARNING_MESSAGE);
-//	            	 int cancelOption = JOptionPane.CANCEL_OPTION;
-//	            }
+	            if(rows*cols < mines) {
+	            	JOptionPane.showMessageDialog(
+	            		mineField, "Mines need to be less than the total number of cells", "Error: mines greater than number of cells",
+	            		JOptionPane.WARNING_MESSAGE);
+	            }
 	            
 	            manager = new GameManager(rows, cols, mines, this);
 	            setPreviousSettings(rows,cols,mines);

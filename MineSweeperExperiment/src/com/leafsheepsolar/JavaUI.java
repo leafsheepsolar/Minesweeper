@@ -152,23 +152,32 @@ public class JavaUI extends JFrame {
 	        int inputResult = JOptionPane.showConfirmDialog(
 	            gameIndicator,
 	            inputs,
-	            "Enter Custom Values",
+	            "Enter values as integers",
 	            JOptionPane.OK_CANCEL_OPTION
 	        );
-
+//TODO: fill out psuedocode!
 	        if (inputResult == JOptionPane.OK_OPTION) {
 	        	if(rowField.getText() == null || colField.getText() == null || mineField.getText() == null) {
-	        		JOptionPane.showMessageDialog(mineField, "Please enter integers", "Error: field(s) are null", JOptionPane.WARNING_MESSAGE);
+	        		JOptionPane.showMessageDialog(
+	        				mineField,
+	        				"Please enter integers",
+	        				"Error: field(s) are null",
+	        				JOptionPane.WARNING_MESSAGE);
+	        
+	        		//exit while allowing user to re-enter values
 	        	}
-	            int rows = Integer.parseInt(rowField.getText());
-	            int cols = Integer.parseInt(colField.getText());
-	            int mines = Integer.parseInt(mineField.getText());
-	            if(rows*cols < mines) {
-	            	JOptionPane.showMessageDialog(
-	            		mineField, "Mines need to be less than the total number of cells", "Error: mines greater than number of cells",
-	            		JOptionPane.WARNING_MESSAGE);
-	            }
-	            
+	        	int rows = Integer.parseInt(rowField.getText().trim());
+	        	int cols = Integer.parseInt(colField.getText().trim());
+	            int mines = Integer.parseInt(mineField.getText().trim());
+	        	if(rows*cols < mines){
+	        		JOptionPane.showMessageDialog(
+		            		mineField, 
+		            		"Mines need to be less than the total number of cells, please re-enter values",
+		            		"Error: mines greater than number of cells",
+		            		JOptionPane.WARNING_MESSAGE);
+	        		//exit while allowing user to re-enter values
+	        	}
+	        	
 	            manager = new GameManager(rows, cols, mines, this);
 	            setPreviousSettings(rows,cols,mines);
 	        }

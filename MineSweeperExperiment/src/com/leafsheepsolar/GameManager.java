@@ -56,12 +56,8 @@ public class GameManager {
         updateParent();
     }
     
-    private void updateParent() {
-    	parent.updateMineCounterText(Integer.toString(mines));
-		parent.setPreviousSettings(rows,cols,mines);
-	}
-
-	/* place mines in intGrid
+    /** 
+	 * place mines in intGrid
      * 1 = mine, 0 = not mine. Given mines, randomize mine placement within the int[][] intGrid
      */
     private void placeMines() {
@@ -87,6 +83,9 @@ public class GameManager {
         }
     }
     
+	/**
+	 * create the board
+	*/
     public void createBoard() {
 	    int buttonSize = Cell.getCellSize();
 	    
@@ -104,6 +103,14 @@ public class GameManager {
 	    parent.addBoard(cPanel);
 	}
     
+	/**
+	 * update the parent JavaUI
+	*/
+    private void updateParent() {
+    	parent.updateMineCounterText(Integer.toString(mines));
+		parent.setPreviousSettings(rows,cols,mines);
+	}
+
     // Count the number of adjacent mines for the Cell at the specified location.
     // Uses intGrid where 1 = mine, 0 = no mine.
     // Checks all 8 adjacent cells plus the cell itself with bounds checking.

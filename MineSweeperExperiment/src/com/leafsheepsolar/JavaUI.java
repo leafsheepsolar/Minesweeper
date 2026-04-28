@@ -12,6 +12,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
+import javax.swing.CellEditor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -64,7 +65,7 @@ public class JavaUI extends JFrame {
 		
 		//set northpanel
 		nPanel = new JPanel(null);
-		nPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		nPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		nPanel.setPreferredSize(new Dimension(0,51));//width is automatically ignored
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
@@ -101,7 +102,7 @@ public class JavaUI extends JFrame {
 				resetBoard(); //the dialogue is a popup
 			}
 		});
-		gameIndicator.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40); //
+		gameIndicator.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40);
 		nPanel.add(gameIndicator);
 
 		//components in nPanel are resized proportionally
@@ -119,7 +120,6 @@ public class JavaUI extends JFrame {
 		previousMines = defaultMines;
 		
 		manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
-		
 	}
 	
 	//reset board/enter settings for next board
@@ -155,20 +155,25 @@ public class JavaUI extends JFrame {
 	            "Enter values as integers",
 	            JOptionPane.OK_CANCEL_OPTION
 	        );
-//TODO: fill out psuedocode!
+
 	        if (inputResult == JOptionPane.OK_OPTION) {
-	        	if(rowField.getText() == null || colField.getText() == null || mineField.getText() == null) {
+	        	int rows;
+	        	int cols;
+	        	int mines;
+				try {
+	        		rows = Integer.parseInt(rowField.getText().trim());
+	        		cols = Integer.parseInt(colField.getText().trim());
+	        		mines = Integer.parseInt(mineField.getText().trim());
+	        	}catch(Exception e){
 	        		JOptionPane.showMessageDialog(
 	        				mineField,
 	        				"Please enter integers",
 	        				"Error: field(s) are null",
 	        				JOptionPane.WARNING_MESSAGE);
-	        
-	        		//exit while allowing user to re-enter values
+	        		return;//TODO: change so the exit allows user to re-enter values
+	        		
 	        	}
-	        	int rows = Integer.parseInt(rowField.getText().trim());
-	        	int cols = Integer.parseInt(colField.getText().trim());
-	            int mines = Integer.parseInt(mineField.getText().trim());
+	        	
 	        	if(rows*cols < mines){
 	        		JOptionPane.showMessageDialog(
 		            		mineField, 
@@ -178,6 +183,9 @@ public class JavaUI extends JFrame {
 	        		//exit while allowing user to re-enter values
 	        	}
 	        	
+//	        	if(Cell.getCellSize() * cols < getWidth() || Cell.getCellSize() * rows < getHeight()) {
+//					setMinimumSize(defualtMinSize);
+//	        	}
 	            manager = new GameManager(rows, cols, mines, this);
 	            setPreviousSettings(rows,cols,mines);
 	        }
@@ -206,7 +214,7 @@ public class JavaUI extends JFrame {
 		}
 		contentPane.remove(this.cPanel);
 		contentPane.add(cPanel, BorderLayout.CENTER);
-	    pack();
+	    pack();//TODO: investigate - its probably whats not working with the resizing componenets
 	    setMinimumSize(getSize());
 	    this.cPanel = cPanel;
 	}

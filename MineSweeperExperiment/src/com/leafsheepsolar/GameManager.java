@@ -3,7 +3,9 @@ package com.leafsheepsolar;
 import java.util.Random;
 
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -90,7 +92,7 @@ public class GameManager {
 	    int buttonSize = Cell.getCellSize();
 	    
 	    JPanel cPanel = new JPanel(new GridLayout(rows, cols));
-	    cPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+	    cPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 	    int cPanelWidth = buttonSize * cols;
 	    int cPanelHeight = buttonSize * rows;
 	    Dimension cPanelDim = new Dimension(cPanelWidth, cPanelHeight);

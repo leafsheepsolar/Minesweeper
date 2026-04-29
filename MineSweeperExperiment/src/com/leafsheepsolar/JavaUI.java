@@ -65,7 +65,11 @@ public class JavaUI extends JFrame {
 		
 		//set northpanel
 		nPanel = new JPanel(null);
-		nPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		nPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED,
+				new Color(119,128,135),
+				new Color(29,38,45),
+				new Color(103,112,119),
+				new Color(42,51,58)));
 		nPanel.setPreferredSize(new Dimension(0,51));//width is automatically ignored
 		contentPane.add(nPanel, BorderLayout.NORTH);
 		
@@ -82,7 +86,11 @@ public class JavaUI extends JFrame {
 	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
 	    }
 	    mineCounter.setFont(configureFont);
-		mineCounter.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		mineCounter.setBorder(new SoftBevelBorder(BevelBorder.LOWERED,
+				new Color(119,128,135),
+				new Color(29,38,45),
+				new Color(103,112,119),
+				new Color(42,51,58)));
 		mineCounter.setBounds(10, 5, 75, 40);
 		nPanel.add(mineCounter);
 		
@@ -103,6 +111,11 @@ public class JavaUI extends JFrame {
 			}
 		});
 		gameIndicator.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40);
+		gameIndicator.setBorder(new SoftBevelBorder(BevelBorder.LOWERED,
+				new Color(119,128,135),
+				new Color(29,38,45),
+				new Color(103,112,119),
+				new Color(42,51,58)));
 		nPanel.add(gameIndicator);
 
 		//components in nPanel are resized proportionally
@@ -214,6 +227,7 @@ public class JavaUI extends JFrame {
 		}
 		contentPane.remove(this.cPanel);
 		contentPane.add(cPanel, BorderLayout.CENTER);
+		setMinimumSize(null);
 	    pack();//TODO: investigate - its probably whats not working with the resizing componenets
 	    setMinimumSize(getSize());
 	    this.cPanel = cPanel;
@@ -241,7 +255,7 @@ public class JavaUI extends JFrame {
 	}
 	
 	public void updateMineCounterText(String text) {
-		mineCounter.setText(text);;
+		mineCounter.setText(text);
 	}
 	
 	public void startTimer() {

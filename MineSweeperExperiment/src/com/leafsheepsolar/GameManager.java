@@ -78,7 +78,7 @@ public class GameManager {
             int r = rand.nextInt(rows);
             int c = rand.nextInt(cols);
 
-	        if (intGrid[r][c] == 0) {     // Prevent duplicates
+	        if (intGrid[r][c] == 0) { // Prevent duplicates
 	            intGrid[r][c] = 1;
 	            placed++;
 	        }
@@ -101,16 +101,16 @@ public class GameManager {
 	    for (int r = 0; r < rows; r++)
 	        for (int c = 0; c < cols; c++)
 	            cPanel.add(grid[r][c]);
-	    
+
+//	    cPanel.pack();
 	    parent.addBoard(cPanel);
 	}
     
 	/**
-	 * update the parent JavaUI
+	 * updates the mineCounterText (and eventually other values?) in parent JavaUI-
 	*/
     private void updateParent() {
     	parent.updateMineCounterText(Integer.toString(mines));
-		parent.setPreviousSettings(rows,cols,mines);
 	}
 
     // Count the number of adjacent mines for the Cell at the specified location.

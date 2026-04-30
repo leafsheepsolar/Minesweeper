@@ -8,14 +8,12 @@ import java.util.Map;
 
 public final class IconRegistry {
 
-    /* ─────────────────────────────────────────────────────────
-     * ICON ROOT DIRECTORY
-     * ───────────────────────────────────────────────────────── */
-    private static final String ICON_ROOT = "/com/leafsheepsolar/Icons/";
+	//Icon root file directory
+    private static final String ICON_ROOT = "/Icons/";
 
-    /* ─────────────────────────────────────────────────────────
-     * CANONICAL ICON SIZE (use for scaled)
-     * ───────────────────────────────────────────────────────── */
+    /*
+	 * Component sizes, add new ones here
+	*/
     private static final Map<String, Rectangle> ICON_SIZES = new HashMap<>();
     
     static {
@@ -29,14 +27,14 @@ public final class IconRegistry {
 	     * ICON_SIZES.put("KEY", new Rectangle(width,height));
 	     */ 
     }
-     /* ─────────────────────────────────────────────────────────
-     * ICON FILE REGISTRY
-     * ADD NEW ICON REFERENCES HERE
-     * ───────────────────────────────────────────────────────── */
+    
+	/*
+	 * Icon file registry, add new files here
+	 */
     private static final Map<String, String> ICON_FILES = new HashMap<>();
 
     static {
-        // JButton number icons
+        // Cell icons
         ICON_FILES.put("ONE", "1Icon.png");
         ICON_FILES.put("TWO", "2Icon.png");
         ICON_FILES.put("THREE", "3Icon.png");
@@ -45,27 +43,22 @@ public final class IconRegistry {
         ICON_FILES.put("SIX", "6Icon.png");
         ICON_FILES.put("SEVEN", "7Icon.png");
         ICON_FILES.put("EIGHT", "8Icon.png");
+        ICON_FILES.put("REVEALED_MINE", "revealedMineIcon.png");
 
         // Cell state icons
-        ICON_FILES.put("BLANK", "blankIcon.png");
+        ICON_FILES.put("UNREVEALED", "unrevealedIcon.png");
         ICON_FILES.put("FLAG", "flagIcon.png");
-        ICON_FILES.put("PRESSED_MINE", "pressedMineIcon.png");
-        ICON_FILES.put("REVEALED_MINE", "revealedMineIcon.png");
+        ICON_FILES.put("INCORRECT_FLAG", "incorrectFlagIcon.png");
+        ICON_FILES.put("CLICKED_MINE", "clickedMineIcon.png");
+        ICON_FILES.put("EMPTY", "emptyIcon.png");
 
         // Game indicator icons
         ICON_FILES.put("GAME_LOST", "gameLostIcon.png");
         ICON_FILES.put("GAME_WON", "gameWonIcon.png");
         ICON_FILES.put("NEUTRAL", "neutralIcon.png");
-
-        /*
-         * To add a new icon:
-         * ICON_FILES.put("KEY", "fileName.png");
-         */
     }
-
-    /* ─────────────────────────────────────────────────────────
-     * ICON CACHES
-     * ───────────────────────────────────────────────────────── */
+	
+    //map registry 
     private static final Map<String, ImageIcon> BASE_ICON_CACHE = new HashMap<>();
     private static final Map<String, ImageIcon> SCALED_ICON_CACHE = new HashMap<>();
 
@@ -73,10 +66,11 @@ public final class IconRegistry {
         // Prevent instantiation
     }
 
-    /* ─────────────────────────────────────────────────────────
-     * PUBLIC API
-     * ───────────────────────────────────────────────────────── */
-
+	/*
+	 *	Public methods
+	 */
+    
+    
     /**
      * Returns the unscaled icon (original PNG size).
      */
@@ -95,10 +89,9 @@ public final class IconRegistry {
         );
     }
 
-    /* ─────────────────────────────────────────────────────────
-     * INTERNAL HELPERS
-     * ───────────────────────────────────────────────────────── */
-
+	/*
+	 * Internal methods
+	*/
     private static ImageIcon loadBaseIcon(String key) {
         String fileName = ICON_FILES.get(key);
 
@@ -110,10 +103,10 @@ public final class IconRegistry {
 
         if (url == null) {
             throw new IllegalStateException(
-                "Icon file not found: " + ICON_ROOT + fileName
+                "Icon file not found: " + ICON_ROOT +  fileName
             );
         }
-
+        
         return new ImageIcon(url);
     }
 

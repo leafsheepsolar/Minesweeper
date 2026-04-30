@@ -1,5 +1,7 @@
 package com.leafsheepsolar;
 
 public class App {
-	JavaUI Application = new JavaUI();
+	public static void main(String[] args) {
+		new JavaUI();
+	}
 }

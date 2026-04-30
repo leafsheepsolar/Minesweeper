@@ -5,37 +5,36 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.Rectangle;
+import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.IOException;
 
-import javax.swing.BorderFactory;
+import javax.swing.CellEditor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
 
 public class JavaUI extends JFrame {
 
-	/**
-	 * 
-	 */
-	private JPanel contentPane, northPane, boardPane;
-	private JButton gameIcon;
+	private JPanel contentPane, nPanel, cPanel;
+	private JButton gameIndicator;
 	private StopwatchLabel timer;
 	private JLabel mineCounter;
 	private GameManager manager;
-	final int defaultRows = 16, defaultCols = 30, defaultMines = 99;
+	final int defaultRows = 9, defaultCols = 9, defaultMines = 10;
+//	final int defaultRows = 16, defaultCols = 30, defaultMines = 99;
 	private int previousRows, previousCols, previousMines;
-	//TODO:check the timer's functionality
-	//TODO:check the gameIndicator's functionality
-	//TODO:check mineCounter's functionality - this needs the most work,  havent done anything yet
-	
-	
 	
 	/**
 	 * Launch the application.
@@ -57,93 +56,101 @@ public class JavaUI extends JFrame {
 	 * Create the frame.
 	 */
 	public JavaUI() {
-		contentPane = new JPanel();
-		northPane = new JPanel();
-		boardPane = new JPanel();
-		gameIcon = new JButton();
-		mineCounter = new JLabel();
-		timer = new StopwatchLabel();
-		
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//setting the frame  and contentpane
 		setBounds(100, 100, 500, 600);
-		contentPane.setLayout(new BorderLayout());
+		setResizable(false);
+		contentPane = new JPanel(new BorderLayout());
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
+		//set northpanel
+		nPanel = new JPanel(null);
+		nPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED,
+				new Color(119,128,135),
+				new Color(29,38,45),
+				new Color(103,112,119),
+				new Color(42,51,58)));
+		nPanel.setPreferredSize(new Dimension(0,51));//width is automatically ignored
+		contentPane.add(nPanel, BorderLayout.NORTH);
 		
-		//TODO: resize north panel to be proportional to window size, only length wise though not width
-		//sizing and creating top panel
-		northPane.setLayout(null);
-		northPane.setPreferredSize(new Dimension(0,51)); //width is ignored (relative to parent), height is not
-		contentPane.add(northPane, BorderLayout.NORTH);
+		//set minecounter
+		mineCounter = new JLabel();
+		mineCounter.setHorizontalAlignment(SwingConstants.TRAILING);
+		Font configureFont;//set the custom font
+	    try {
+	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
+	    	configureFont = configureFont.deriveFont(Font.BOLD,28f);
+	    }
+	    catch (FontFormatException | IOException e){
+	    	e.printStackTrace();
+	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
+	    }
+	    mineCounter.setFont(configureFont);
+		mineCounter.setBorder(new SoftBevelBorder(BevelBorder.LOWERED,
+				new Color(119,128,135),
+				new Color(29,38,45),
+				new Color(103,112,119),
+				new Color(42,51,58)));
+		mineCounter.setBounds(10, 5, 75, 40);
+		nPanel.add(mineCounter);
 		
-		boardPane.setLayout(new GridBagLayout());//work on the board layout
-		contentPane.add(boardPane, BorderLayout.CENTER);
-		
-		mineCounter.setPreferredSize(new Dimension(75,40));
-		
-		
-		//triggers a popup sequence
-		gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
-		gameIcon.setPreferredSize(new Dimension(45,45));
-		gameIcon.addActionListener(new ActionListener(){ 
-			
-			public void actionPerformed(ActionEvent e) {
-				gameIconActionPerformed();
-				
-			}
-		});
-
-		//resize such that the location will be proportional to the northPane's size
-		gameIcon.setBounds(getWidth()/2 - 45, northPane.getY()+3, 45, 45);
-		northPane.add(gameIcon);
-		
-		
-		//StopwatchLabel is exactly that: extends JLabel and has stopwatch functionality
-		timer.setBackground(new Color(128,128,128));
-		timer.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 4));
-		timer.setFont(new Font("Monospaced", Font.BOLD, 16));
-		timer.setBounds(10, 5, 60, 30);
-		northPane.add(timer);
+		//set timer
+		timer = new StopwatchLabel();
+		timer.setBounds(383, 5, 75, 40);
+		nPanel.add(timer);
 		//showing 000 on the timer
 		timer.startTimer();
 		timer.pause();
 		
-		
-	}
-	
-	public void startTimer() {
-		timer.startTimer();
-	}
-	
-	public void gameWon() {
-			gameIcon.setIcon(IconRegistry.getScaled("GAME_WON","GAME_INDICATOR"));
-			timer.pause();	
-	}
-	
-	
-	public void gameLost() {
-			gameIcon.setIcon(IconRegistry.getScaled("GAME_LOST","GAME_INDICATOR"));
-			timer.pause();
-	}
-	
-	//this is to reset the game board
-	private void gameIconActionPerformed() {
+		//set gameIndicator
+		gameIndicator = new JButton();
+		gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
+		gameIndicator.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				resetBoard(); //the dialogue is a popup
+			}
+		});
+		gameIndicator.setBounds(getWidth()/2 - 20, nPanel.getY()+3, 40, 40);
+		gameIndicator.setBorder(new SoftBevelBorder(BevelBorder.LOWERED,
+				new Color(119,128,135),
+				new Color(29,38,45),
+				new Color(103,112,119),
+				new Color(42,51,58)));
+		nPanel.add(gameIndicator);
 
-	    gameIcon.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
+		//components in nPanel are resized proportionally
+		addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+				gameIndicator.setBounds(getWidth()/2 - 30, 5, 40, 40);
+				timer.setBounds(getWidth()-105, 5, 70, 40);
+		    }
+		});
+		
+		//give previousRows a default value
+		previousRows = defaultRows;
+		previousCols = defaultCols;
+		previousMines = defaultMines;
+		
+		manager = new GameManager(defaultRows, defaultCols, defaultMines, this);
+	}
+	
+	//reset board/enter settings for next board
+	private void resetBoard() {
+
+	    gameIndicator.setIcon(IconRegistry.getScaled("NEUTRAL","GAME_INDICATOR"));
 	    timer.reset();
 
-	    // Step 1: Ask if user wants custom values
-	    int customChoice = JOptionPane.showConfirmDialog(
-	        gameIcon,
+	    // ask if user wants custom values
+	    int inputSettings = JOptionPane.showConfirmDialog(
+	        gameIndicator,
 	        "Use custom board values?",
 	        "Game Setup",
 	        JOptionPane.YES_NO_OPTION
 	    );
 
-	    // YES → custom values
-	    if (customChoice == JOptionPane.YES_OPTION) {
+	    // yes -> go to custom options
+	    if (inputSettings == JOptionPane.YES_OPTION) {
 
 	        JTextField rowField = new JTextField();
 	        JTextField colField = new JTextField();
@@ -156,28 +163,51 @@ public class JavaUI extends JFrame {
 	        };
 
 	        int inputResult = JOptionPane.showConfirmDialog(
-	            gameIcon,
+	            gameIndicator,
 	            inputs,
-	            "Enter Custom Values",
+	            "Enter values as integers",
 	            JOptionPane.OK_CANCEL_OPTION
 	        );
 
 	        if (inputResult == JOptionPane.OK_OPTION) {
-	            int rows = Integer.parseInt(rowField.getText());
-	            int cols = Integer.parseInt(colField.getText());
-	            int mines = Integer.parseInt(mineField.getText());
-	            previousRows = rows;
-	            previousCols = cols;
-	            previousMines = mines;
+	        	int rows;
+	        	int cols;
+	        	int mines;
+				try {
+	        		rows = Integer.parseInt(rowField.getText().trim());
+	        		cols = Integer.parseInt(colField.getText().trim());
+	        		mines = Integer.parseInt(mineField.getText().trim());
+	        	}catch(Exception e){
+	        		JOptionPane.showMessageDialog(
+	        				mineField,
+	        				"Please enter integers",
+	        				"Error: field(s) are null",
+	        				JOptionPane.WARNING_MESSAGE);
+	        		return;//TODO: change so the exit allows user to re-enter values
+	        		
+	        	}
+	        	
+	        	if(rows*cols < mines){
+	        		JOptionPane.showMessageDialog(
+		            		mineField, 
+		            		"Mines need to be less than the total number of cells, please re-enter values",
+		            		"Error: mines greater than number of cells",
+		            		JOptionPane.WARNING_MESSAGE);
+	        		//exit while allowing user to re-enter values
+	        	}
+	        	
+//	        	if(Cell.getCellSize() * cols < getWidth() || Cell.getCellSize() * rows < getHeight()) {
+//					setMinimumSize(defualtMinSize);
+//	        	}
 	            manager = new GameManager(rows, cols, mines, this);
+	            setPreviousSettings(rows,cols,mines);
 	        }
-
 	        return;
 	    }
 
-	    // Step 2: Not custom → ask default vs previous
+	    // not custom -> use presets or past choice?
 	    int reuseChoice = JOptionPane.showConfirmDialog(
-	        gameIcon,
+	        gameIndicator,
 	        "Use default values?\n(rows: 16, cols: 30, mines: 99)\n\nSelect NO to reuse previous values.",
 	        "Game Setup",
 	        JOptionPane.YES_NO_OPTION
@@ -190,21 +220,56 @@ public class JavaUI extends JFrame {
 	    }
 	}
 	
-	public JPanel getGameBoard() {
-		return this.boardPane;
+	public void addBoard(JPanel cPanel) {
+		if(this.cPanel == null) {//if there isnt a cPanel, make a default one
+			addBoard1(cPanel);
+			return;
+		}
+		contentPane.remove(this.cPanel);
+		contentPane.add(cPanel, BorderLayout.CENTER);
+		setMinimumSize(null);
+	    pack();//TODO: investigate - its probably whats not working with the resizing componenets
+	    setMinimumSize(getSize());
+	    this.cPanel = cPanel;
 	}
 	
-	public void setGameBoard(JPanel boardPane) {
-		this.boardPane = boardPane;
-		pack();
+	private void addBoard1(JPanel cPanel) {//makes a default cPanel
+		contentPane.add(cPanel, BorderLayout.CENTER);
+	    pack();
+	    setMinimumSize(getSize());
+	    this.cPanel = cPanel;
 	}
-
-	public JLabel getMineCounter() {
-		return mineCounter;
+	
+	public JPanel getGameBoard() {
+		return this.cPanel;
 	}
-
-	public void setMineCounter(JLabel mineCounter) {
-		this.mineCounter = mineCounter;
+	
+	public void setPreviousSettings(int rows, int cols, int mines) {
+		rows = previousRows;
+		cols = previousCols;
+		mines = previousMines;
+	}
+	
+	public String getMineCounterText() {
+		return mineCounter.getText();
+	}
+	
+	public void updateMineCounterText(String text) {
+		mineCounter.setText(text);
+	}
+	
+	public void startTimer() {
+		timer.startTimer();
+	}
+	
+	public void gameWon() {
+		gameIndicator.setIcon(IconRegistry.getScaled("GAME_WON","GAME_INDICATOR"));
+		timer.pause();	
+	}
+	
+	public void gameLost() {
+		gameIndicator.setIcon(IconRegistry.getScaled("GAME_LOST","GAME_INDICATOR"));
+		timer.pause();
 	}
 	
 	

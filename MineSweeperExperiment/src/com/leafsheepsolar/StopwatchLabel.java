@@ -1,7 +1,15 @@
 package com.leafsheepsolar;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
 
 public class StopwatchLabel extends JLabel {
 
@@ -14,6 +22,12 @@ public class StopwatchLabel extends JLabel {
 	private int time;            // 0–999 (seconds)
     private final Timer timer;
 
+    
+	/**
+	 * <p> JLabel with an automatic stopwatch. Check methods for more info. 
+	 * 
+	 * <p> There is preset GUI, with the exeption of bounds. 
+	*/
     public StopwatchLabel() {
         time = 0;
         setText(formatTime());
@@ -25,29 +39,59 @@ public class StopwatchLabel extends JLabel {
                 setText(formatTime());
             }
         });
+        
+        //One for display seconds, the other for miliseconds when reporting the final time. 
+        
+        configure();
     }
 
-    // Starts or resumes the timer
+    //configures gui elements 
+	private void configure() {
+		Font configureFont;//set the font
+	    try {
+	    	configureFont = Font.createFont(Font.TRUETYPE_FONT,getClass().getResourceAsStream("/alarm clock.ttf"));
+	    	configureFont = configureFont.deriveFont(Font.BOLD,28f);
+	    }
+	    catch (FontFormatException | IOException e){
+	    	e.printStackTrace();
+	    	configureFont = new Font("Tahoma", Font.PLAIN, 28);
+	    }
+		
+		setHorizontalAlignment(SwingConstants.TRAILING);
+		setFont(configureFont);
+		setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		setBackground(new Color(128,128,128));
+	}
+
+	/**
+	 *  Starts or resumes the timer
+	 */
     public void startTimer() {
         if (!timer.isRunning()) {
             timer.start();
         }
     }
 
-    // Pauses the timer
+	/**
+	 *  Pauses the timer
+	 */    
     public void pause() {
         timer.stop();
     }
 
-    // Resets time to 0 and updates display
+	/**
+	 *  Resets time to 0 and updates display
+	 */
     public void reset() {
         timer.stop();
         time = 0;
         setText(formatTime());
     }
 
-    // Returns the current time value
-    public int getTime() {
+	/**
+	 *  Returns the current time field
+	 */
+	 public int getTime() {
         return time;
     }
 

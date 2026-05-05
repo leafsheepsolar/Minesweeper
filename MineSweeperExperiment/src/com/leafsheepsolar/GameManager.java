@@ -4,10 +4,8 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 

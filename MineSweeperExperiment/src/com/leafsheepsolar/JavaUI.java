@@ -12,7 +12,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
-import javax.swing.CellEditor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +21,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 
 public class JavaUI extends JFrame {
@@ -183,7 +181,7 @@ public class JavaUI extends JFrame {
 	        				"Please enter integers",
 	        				"Error: field(s) are null",
 	        				JOptionPane.WARNING_MESSAGE);
-	        		return;//TODO: change so the exit allows user to re-enter values
+	        		return;//TODO: change so the exit allows user to re-enter values (go to the previous JOptionPane object)
 	        		
 	        	}
 	        	
@@ -193,6 +191,17 @@ public class JavaUI extends JFrame {
 		            		"Mines need to be less than the total number of cells, please re-enter values",
 		            		"Error: mines greater than number of cells",
 		            		JOptionPane.WARNING_MESSAGE);
+	        		return;
+	        		//exit while allowing user to re-enter values
+	        	}
+	        	
+	        	if((rows < defaultCols && cols < defaultRows) || (rows < defaultRows && cols < defaultCols) || cols < defaultCols){
+	        		JOptionPane.showMessageDialog(
+		            		rowField, 
+		            		"The grid must be larger than "+defaultRows+", "+defaultCols+".",
+		            		"Error: grid too small",
+		            		JOptionPane.WARNING_MESSAGE);
+	        		return;
 	        		//exit while allowing user to re-enter values
 	        	}
 	        	

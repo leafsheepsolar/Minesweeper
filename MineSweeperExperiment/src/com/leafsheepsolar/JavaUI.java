@@ -254,9 +254,9 @@ public class JavaUI extends JFrame {
 	}
 	
 	public void setPreviousSettings(int rows, int cols, int mines) {
-		rows = previousRows;
-		cols = previousCols;
-		mines = previousMines;
+		previousRows = rows;
+		previousCols = cols;
+		previousMines = mines;
 	}
 	
 	public String getMineCounterText() {
